@@ -1,7 +1,11 @@
 import { combineReducers } from "redux"
 
-import location from "./location.reducer"
+import location, { locationState } from "./location.reducer"
 
-export default combineReducers({
+export interface State {
+  location: locationState
+}
+
+export default combineReducers<State>({
   location,
 })

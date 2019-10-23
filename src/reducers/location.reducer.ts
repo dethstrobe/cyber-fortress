@@ -1,5 +1,10 @@
 export const MOVE_ACTION = "MOVE_ACTION"
 
+export const moveAction = (payload: locationState) => ({
+  type: MOVE_ACTION,
+  payload,
+})
+
 const actions = {
   [MOVE_ACTION](state: locationState, payload: locationState) {
     return {

@@ -1,7 +1,8 @@
-import React from "react"
+import React, { useEffect } from "react"
 import { locationState, moveAction } from "../reducers/location.reducer"
 import { connect } from "react-redux"
 import { State } from "../reducers"
+import { renderBoard } from "./renderBoard"
 
 type Props = {
   moveAction: (payload: locationState) => void
@@ -10,6 +11,13 @@ type Props = {
 
 const Board: React.FC<Props> = ({ moveAction, location }) => {
   const canvasRef = React.useRef<HTMLCanvasElement>(null)
+
+  useEffect(() => {
+    const canvas = canvasRef.current
+    const ctx = canvas && canvas.getContext("2d")
+    if (ctx) renderBoard(ctx)
+  }, [])
+
   return (
     <canvas
       data-testid="game-board"
@@ -18,8 +26,6 @@ const Board: React.FC<Props> = ({ moveAction, location }) => {
       height={window.innerHeight}
       onClick={e => {
         console.log(e.clientX, e.clientY, location)
-        const canvas = canvasRef.current
-        const ctx = canvas && canvas.getContext("2d")
         // implement draw on ctx here
         moveAction({ x: e.clientX, y: e.clientY })
       }}

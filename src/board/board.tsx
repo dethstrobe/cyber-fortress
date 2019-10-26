@@ -32,8 +32,6 @@ const Board: React.FC<Props> = ({ moveAction, location }) => {
       width={window.innerWidth}
       height={window.innerHeight}
       onClick={e => {
-        console.log(e.clientX / scale, e.clientY / scale, location)
-        // implement draw on ctx here
         moveAction({
           x: Math.floor(e.clientX / scale),
           y: Math.floor(e.clientY / scale),

@@ -2,11 +2,19 @@ import React, { useEffect } from "react"
 import { locationState, moveAction } from "../reducers/location.reducer"
 import { connect } from "react-redux"
 import { State } from "../reducers"
-import { renderBoard } from "./renderBoard"
+import { renderBoard, Center } from "./renderBoard"
 
 type Props = {
   moveAction: (payload: locationState) => void
   location: locationState
+}
+
+function findCenter(canvas: HTMLCanvasElement, scale: number): Center {
+  const halfScale = scale / 2
+  return {
+    x: canvas.width / 2 - halfScale,
+    y: canvas.height / 2 - halfScale,
+  }
 }
 
 const scale = 100
@@ -16,12 +24,14 @@ const Board: React.FC<Props> = ({ moveAction, location }) => {
 
   useEffect(() => {
     const canvas = canvasRef.current
-    const ctx = canvas && canvas.getContext("2d")
+    if (canvas === null) return
+    const ctx = canvas.getContext("2d"),
+      center = findCenter(canvas, scale)
     if (ctx)
       renderBoard(ctx, {
         scale,
-        offsetX: scale * location.x,
-        offsetY: scale * location.y,
+        center,
+        offset: { x: scale * location.x, y: scale * location.y },
       })
   }, [location])
 
@@ -32,9 +42,11 @@ const Board: React.FC<Props> = ({ moveAction, location }) => {
       width={window.innerWidth}
       height={window.innerHeight}
       onClick={e => {
+        if (!canvasRef.current) return
+        const center = findCenter(canvasRef.current, scale)
         moveAction({
-          x: Math.floor(e.clientX / scale),
-          y: Math.floor(e.clientY / scale),
+          x: Math.ceil((center.x - e.clientX) / scale),
+          y: Math.ceil((center.y - e.clientY) / scale),
         })
       }}
     />

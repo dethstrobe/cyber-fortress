@@ -1,30 +1,27 @@
+export interface Center {
+  x: number
+  y: number
+}
+
 interface BoardOptions {
   scale: number
-  offsetX: number
-  offsetY: number
+  offset: { x: number; y: number }
+  center: Center
 }
 
 export const renderBoard = (
   ctx: CanvasRenderingContext2D,
-  { scale, offsetX, offsetY }: BoardOptions,
+  { scale, center, offset }: BoardOptions,
 ) => {
   const { width, height } = ctx.canvas,
-    halfScale = scale / 2,
-    center = {
-      x: width / 2 - halfScale,
-      y: height / 2 - halfScale,
-    }
+    offsetX = center.x + offset.x,
+    offsetY = center.y + offset.y
 
   ctx.clearRect(0, 0, width, height)
   ctx.beginPath()
   for (let x = 0; x < 8; ++x) {
     for (let y = 0; y < 8; ++y) {
-      ctx.rect(
-        x * scale + offsetX + center.x,
-        y * scale + offsetY + center.y,
-        scale,
-        scale,
-      )
+      ctx.rect(x * scale + offsetX, y * scale + offsetY, scale, scale)
     }
   }
 

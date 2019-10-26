@@ -1,7 +1,14 @@
-export const renderBoard = (ctx: CanvasRenderingContext2D) => {
-  const scale = 100
-  const offsetX = 1 * scale
-  const offsetY = 1 * scale
+interface BoardOptions {
+  scale: number
+  offsetX: number
+  offsetY: number
+}
+
+export const renderBoard = (
+  ctx: CanvasRenderingContext2D,
+  { scale, offsetX, offsetY }: BoardOptions,
+) => {
+  ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height)
   ctx.beginPath()
   for (let x = 0; x < 8; ++x) {
     for (let y = 0; y < 8; ++y) {
@@ -10,4 +17,8 @@ export const renderBoard = (ctx: CanvasRenderingContext2D) => {
   }
 
   ctx.stroke()
+
+  // player
+  ctx.fillStyle = "red"
+  ctx.fillRect(0, 0, scale, scale)
 }

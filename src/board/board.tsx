@@ -9,14 +9,21 @@ type Props = {
   location: locationState
 }
 
+const scale = 100
+
 const Board: React.FC<Props> = ({ moveAction, location }) => {
   const canvasRef = React.useRef<HTMLCanvasElement>(null)
 
   useEffect(() => {
     const canvas = canvasRef.current
     const ctx = canvas && canvas.getContext("2d")
-    if (ctx) renderBoard(ctx)
-  }, [])
+    if (ctx)
+      renderBoard(ctx, {
+        scale,
+        offsetX: scale * location.x,
+        offsetY: scale * location.y,
+      })
+  }, [location])
 
   return (
     <canvas
@@ -25,9 +32,12 @@ const Board: React.FC<Props> = ({ moveAction, location }) => {
       width={window.innerWidth}
       height={window.innerHeight}
       onClick={e => {
-        console.log(e.clientX, e.clientY, location)
+        console.log(e.clientX / scale, e.clientY / scale, location)
         // implement draw on ctx here
-        moveAction({ x: e.clientX, y: e.clientY })
+        moveAction({
+          x: Math.floor(e.clientX / scale),
+          y: Math.floor(e.clientY / scale),
+        })
       }}
     />
   )

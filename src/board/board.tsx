@@ -1,11 +1,14 @@
 import React, { useEffect } from "react"
-import { locationState, moveAction } from "../reducers/location.reducer"
+import { locationState, moveActions } from "../reducers/location.reducer"
 import { connect } from "react-redux"
 import { State } from "../reducers"
 import { renderBoard, Center } from "./renderBoard"
 
 type Props = {
-  moveAction: (payload: locationState) => void
+  up: () => void
+  down: () => void
+  left: () => void
+  right: () => void
   location: locationState
 }
 
@@ -19,7 +22,7 @@ function findCenter(canvas: HTMLCanvasElement, scale: number): Center {
 
 const scale = 100
 
-const Board: React.FC<Props> = ({ moveAction, location }) => {
+const Board: React.FC<Props> = ({ up, down, left, right, location }) => {
   const canvasRef = React.useRef<HTMLCanvasElement>(null)
 
   useEffect(() => {
@@ -44,10 +47,17 @@ const Board: React.FC<Props> = ({ moveAction, location }) => {
       onClick={e => {
         if (!canvasRef.current) return
         const center = findCenter(canvasRef.current, scale)
-        moveAction({
-          x: Math.ceil((center.x - e.clientX) / scale),
-          y: Math.ceil((center.y - e.clientY) / scale),
-        })
+        const loc = {
+          x: Math.floor((e.clientX - center.x) / scale),
+          y: Math.floor((e.clientY - center.y) / scale),
+        }
+        console.log(e.clientX, loc.x, e.clientY, loc.y)
+
+        if (loc.y > 0) {
+          up()
+        } else if (loc.y < 0) {
+          down()
+        }
       }}
     />
   )
@@ -59,6 +69,6 @@ const mapStateToProps = (state: State) => ({
 
 export default connect(
   mapStateToProps,
-  { moveAction },
+  { ...moveActions },
 )(Board)
 export { Board }

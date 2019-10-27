@@ -14,8 +14,8 @@ export const renderBoard = (
   { scale, center, offset }: BoardOptions,
 ) => {
   const { width, height } = ctx.canvas,
-    offsetX = center.x + offset.x,
-    offsetY = center.y + offset.y
+    offsetX = center.x - offset.x,
+    offsetY = center.y - offset.y
 
   ctx.clearRect(0, 0, width, height)
   ctx.beginPath()

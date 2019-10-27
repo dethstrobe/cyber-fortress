@@ -71,5 +71,17 @@ describe("<Board/>", () => {
       expect(moveActionsMock.left).toHaveBeenCalled()
       expect(moveActionsMock.right).not.toHaveBeenCalled()
     })
+
+    it("should not dispatch a move action when clicked in the center", () => {
+      const { getByTestId, moveActionsMock } = setup()
+      fireEvent.click(getByTestId("game-board"), {
+        clientX: center.x,
+        clientY: center.y,
+      })
+      expect(moveActionsMock.up).not.toHaveBeenCalled()
+      expect(moveActionsMock.down).not.toHaveBeenCalled()
+      expect(moveActionsMock.left).not.toHaveBeenCalled()
+      expect(moveActionsMock.right).not.toHaveBeenCalled()
+    })
   })
 })

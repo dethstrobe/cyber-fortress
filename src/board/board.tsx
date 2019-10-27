@@ -51,12 +51,15 @@ const Board: React.FC<Props> = ({ up, down, left, right, location }) => {
           x: Math.floor((e.clientX - center.x) / scale),
           y: Math.floor((e.clientY - center.y) / scale),
         }
-        console.log(e.clientX, loc.x, e.clientY, loc.y)
 
-        if (loc.y > 0) {
+        if (loc.y < 0) {
           up()
-        } else if (loc.y < 0) {
+        } else if (loc.y > 0) {
           down()
+        } else if (loc.x > 0) {
+          right()
+        } else if (loc.x < 0) {
+          left()
         }
       }}
     />

@@ -1,7 +1,7 @@
 import React, { useEffect } from "react"
-import { locationState, moveActions } from "../reducers/location.reducer"
+import { moveActions } from "../reducers/move"
+import { PlayerState, State } from "../reducers/game.reducer"
 import { connect } from "react-redux"
-import { State } from "../reducers"
 import { renderBoard, Center } from "./renderBoard"
 
 type Props = {
@@ -9,7 +9,7 @@ type Props = {
   down: () => void
   left: () => void
   right: () => void
-  location: locationState
+  location: PlayerState
 }
 
 function findCenter(canvas: HTMLCanvasElement, scale: number): Center {
@@ -67,7 +67,7 @@ const Board: React.FC<Props> = ({ up, down, left, right, location }) => {
 }
 
 const mapStateToProps = (state: State) => ({
-  location: state.location,
+  location: state.player,
 })
 
 export default connect(

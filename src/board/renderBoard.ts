@@ -1,17 +1,20 @@
-export interface Center {
+import { GameMap } from "../reducers/game.reducer"
+
+export interface Coordinates {
   x: number
   y: number
 }
 
 interface BoardOptions {
   scale: number
-  offset: { x: number; y: number }
-  center: Center
+  offset: Coordinates
+  center: Coordinates
+  map: GameMap
 }
 
 export const renderBoard = (
   ctx: CanvasRenderingContext2D,
-  { scale, center, offset }: BoardOptions,
+  { scale, center, offset, map }: BoardOptions,
 ) => {
   const { width, height } = ctx.canvas,
     offsetX = center.x - offset.x,
@@ -19,14 +22,20 @@ export const renderBoard = (
 
   ctx.clearRect(0, 0, width, height)
   ctx.beginPath()
-  for (let x = 0; x < 8; ++x) {
-    for (let y = 0; y < 8; ++y) {
+  console.time("render map")
+  map.forEach((row, y) => {
+    row.forEach((tile, x) => {
       ctx.rect(x * scale + offsetX, y * scale + offsetY, scale, scale)
-    }
-  }
+    })
+  })
+  // for (let x = 0, xlen = map.length; x < xlen; ++x) {
+  //   for (let y = 0, ylen = map[0].length; y < ylen; ++y) {
+  //     ctx.rect(x * scale + offsetX, y * scale + offsetY, scale, scale)
+  //   }
+  // }
 
   ctx.stroke()
-
+  console.timeEnd("render map")
   // player
   ctx.fillStyle = "red"
   ctx.fillRect(center.x, center.y, scale, scale)

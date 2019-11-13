@@ -1,18 +1,19 @@
 import React, { useEffect } from "react"
 import { moveActions } from "../reducers/move"
-import { PlayerState, State } from "../reducers/game.reducer"
+import { PlayerState, State, GameMap } from "../reducers/game.reducer"
 import { connect } from "react-redux"
-import { renderBoard, Center } from "./renderBoard"
+import { renderBoard, Coordinates } from "./renderBoard"
 
 type Props = {
   up: () => void
   down: () => void
   left: () => void
   right: () => void
-  location: PlayerState
+  player: PlayerState
+  map: GameMap
 }
 
-function findCenter(canvas: HTMLCanvasElement, scale: number): Center {
+function findCenter(canvas: HTMLCanvasElement, scale: number): Coordinates {
   const halfScale = scale / 2
   return {
     x: canvas.width / 2 - halfScale,
@@ -22,7 +23,7 @@ function findCenter(canvas: HTMLCanvasElement, scale: number): Center {
 
 const scale = 100
 
-const Board: React.FC<Props> = ({ up, down, left, right, location }) => {
+const Board: React.FC<Props> = ({ up, down, left, right, player, map }) => {
   const canvasRef = React.useRef<HTMLCanvasElement>(null)
 
   useEffect(() => {
@@ -34,9 +35,10 @@ const Board: React.FC<Props> = ({ up, down, left, right, location }) => {
       renderBoard(ctx, {
         scale,
         center,
-        offset: { x: scale * location.x, y: scale * location.y },
+        offset: { x: scale * player.x, y: scale * player.y },
+        map,
       })
-  }, [location])
+  }, [player])
 
   return (
     <canvas
@@ -67,7 +69,8 @@ const Board: React.FC<Props> = ({ up, down, left, right, location }) => {
 }
 
 const mapStateToProps = (state: State) => ({
-  location: state.player,
+  player: state.player,
+  map: state.map,
 })
 
 export default connect(

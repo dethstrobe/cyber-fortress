@@ -5,11 +5,25 @@ export interface PlayerState {
   y: number
 }
 
+export type GameMap = string[][]
+
 export class State {
   player: PlayerState = {
     x: 0,
     y: 0,
   }
+  map: GameMap = [
+    [..."OOOOOOOOOO"],
+    [..."OOOOOOOOOO"],
+    [..."OOOOOOOOOO"],
+    [..."OOOOOOOOOO"],
+    [..."OOOOOOOOOO"],
+    [..."OOOOOOOOOO"],
+    [..."OOOOOOOOOO"],
+    [..."OOOOOOOOOO"],
+    [..."OOOOOOOOOO"],
+    [..."OOOOOOOOOO"],
+  ]
 }
 
 const noAction = (state: State) => state

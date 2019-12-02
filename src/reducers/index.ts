@@ -1,5 +1,3 @@
-import { combineReducers } from "redux"
-
-import location, { State } from "./game.reducer"
+import location from "./game.reducer"
 
 export default location

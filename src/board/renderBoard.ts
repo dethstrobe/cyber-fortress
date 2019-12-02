@@ -12,6 +12,29 @@ interface BoardOptions {
   map: GameMap
 }
 
+function drawBoard(
+  ctx: CanvasRenderingContext2D,
+  map: string[][],
+  scale: number,
+  offsetX: number,
+  offsetY: number,
+) {
+  map.forEach((row, y) => {
+    row.forEach((tile, x) => {
+      ctx.rect(x * scale + offsetX, y * scale + offsetY, scale, scale)
+    })
+  })
+}
+
+function drawPlayer(
+  ctx: CanvasRenderingContext2D,
+  center: Coordinates,
+  scale: number,
+) {
+  ctx.fillStyle = "red"
+  ctx.fillRect(center.x, center.y, scale, scale)
+}
+
 export const renderBoard = (
   ctx: CanvasRenderingContext2D,
   { scale, center, offset, map }: BoardOptions,
@@ -22,21 +45,11 @@ export const renderBoard = (
 
   ctx.clearRect(0, 0, width, height)
   ctx.beginPath()
-  console.time("render map")
-  map.forEach((row, y) => {
-    row.forEach((tile, x) => {
-      ctx.rect(x * scale + offsetX, y * scale + offsetY, scale, scale)
-    })
-  })
-  // for (let x = 0, xlen = map.length; x < xlen; ++x) {
-  //   for (let y = 0, ylen = map[0].length; y < ylen; ++y) {
-  //     ctx.rect(x * scale + offsetX, y * scale + offsetY, scale, scale)
-  //   }
-  // }
+
+  drawBoard(ctx, map, scale, offsetX, offsetY)
 
   ctx.stroke()
-  console.timeEnd("render map")
+
   // player
-  ctx.fillStyle = "red"
-  ctx.fillRect(center.x, center.y, scale, scale)
+  drawPlayer(ctx, center, scale)
 }

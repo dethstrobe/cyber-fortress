@@ -38,7 +38,7 @@ const Board: React.FC<Props> = ({ up, down, left, right, player, map }) => {
         offset: { x: scale * player.x, y: scale * player.y },
         map,
       })
-  }, [player])
+  }, [player, map])
 
   return (
     <canvas
@@ -73,8 +73,5 @@ const mapStateToProps = (state: State) => ({
   map: state.map,
 })
 
-export default connect(
-  mapStateToProps,
-  { ...moveActions },
-)(Board)
+export default connect(mapStateToProps, { ...moveActions })(Board)
 export { Board }

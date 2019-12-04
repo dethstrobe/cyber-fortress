@@ -22,6 +22,10 @@ function drawBoard(
   map.forEach((row, y) => {
     row.forEach((tile, x) => {
       ctx.rect(x * scale + offsetX, y * scale + offsetY, scale, scale)
+
+      ctx.fillStyle = "cyan"
+      ctx.fill()
+      ctx.stroke()
     })
   })
 }
@@ -47,8 +51,6 @@ export const renderBoard = (
   ctx.beginPath()
 
   drawBoard(ctx, map, scale, offsetX, offsetY)
-
-  ctx.stroke()
 
   // player
   drawPlayer(ctx, center, scale)

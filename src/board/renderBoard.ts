@@ -1,4 +1,4 @@
-import { GameMap } from "../reducers/game.reducer"
+import { GameMap, TileOption } from "../reducers/game.reducer"
 
 export interface Coordinates {
   x: number
@@ -12,20 +12,28 @@ interface BoardOptions {
   map: GameMap
 }
 
+type TileOptions = {
+  [key in TileOption]: { stroke: string; fill: string }
+}
+
+const tileRenderOptions: TileOptions = {
+  O: { stroke: "blue", fill: "lightgray" },
+  X: { stroke: "black", fill: "black" },
+}
+
 function drawBoard(
   ctx: CanvasRenderingContext2D,
-  map: string[][],
+  map: TileOption[][],
   scale: number,
   offsetX: number,
   offsetY: number,
 ) {
   map.forEach((row, y) => {
     row.forEach((tile, x) => {
-      ctx.rect(x * scale + offsetX, y * scale + offsetY, scale, scale)
-
-      ctx.fillStyle = "cyan"
-      ctx.fill()
-      ctx.stroke()
+      const { stroke, fill } = tileRenderOptions[tile]
+      ctx.fillStyle = fill
+      ctx.strokeStyle = stroke
+      ctx.fillRect(x * scale + offsetX, y * scale + offsetY, scale, scale)
     })
   })
 }

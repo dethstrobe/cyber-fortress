@@ -5,7 +5,9 @@ export interface PlayerState {
   y: number
 }
 
-export type GameMap = string[][]
+export type TileOption = "O" | "X"
+
+export type GameMap = TileOption[][]
 
 export class State {
   player: PlayerState = {
@@ -13,16 +15,16 @@ export class State {
     y: 0,
   }
   map: GameMap = [
-    [..."OOOOOOOOOO"],
-    [..."OOOOOOOOOO"],
-    [..."OOOOOOOOOO"],
-    [..."OOOOOOOOOO"],
-    [..."OOOOOOOOOO"],
-    [..."OOOOOOOOOO"],
-    [..."OOOOOOOOOO"],
-    [..."OOOOOOOOOO"],
-    [..."OOOOOOOOOO"],
-    [..."OOOOOOOOOO"],
+    ["O", "O", "O", "X", "O", "O", "O", "X", "O", "O"],
+    ["O", "O", "O", "X", "O", "O", "O", "X", "O", "O"],
+    ["O", "O", "O", "X", "X", "O", "X", "X", "O", "O"],
+    ["O", "O", "O", "O", "O", "O", "O", "O", "O", "O"],
+    ["O", "O", "O", "O", "O", "O", "O", "O", "O", "O"],
+    ["O", "O", "O", "O", "O", "O", "O", "O", "O", "O"],
+    ["O", "O", "O", "O", "O", "O", "O", "O", "O", "O"],
+    ["O", "O", "O", "O", "O", "O", "O", "O", "O", "O"],
+    ["O", "O", "O", "O", "O", "O", "O", "O", "O", "O"],
+    ["O", "O", "O", "O", "O", "O", "O", "O", "O", "O"],
   ]
 }
 

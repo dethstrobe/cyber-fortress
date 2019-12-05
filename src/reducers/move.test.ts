@@ -1,15 +1,16 @@
-import gameReducer from "./game.reducer"
+import gameReducer, { State } from "./game.reducer"
 import { MOVE_ACTIONS } from "./move"
 
 describe("move actions", () => {
+  const initState: State = {
+    player: { x: 2, y: 3 },
+    map: [],
+  }
   describe("move up", () => {
     it("should decrease the Y value", () => {
-      const actual = gameReducer(
-        { player: { x: 2, y: 3 } },
-        {
-          type: MOVE_ACTIONS.up,
-        },
-      )
+      const actual = gameReducer(initState, {
+        type: MOVE_ACTIONS.up,
+      })
 
       expect(actual.player).toEqual({ x: 2, y: 2 })
     })
@@ -26,12 +27,9 @@ describe("move actions", () => {
   })
   describe("move left", () => {
     it("should decrease the X value", () => {
-      const actual = gameReducer(
-        { player: { x: 2, y: 3 } },
-        {
-          type: MOVE_ACTIONS.left,
-        },
-      )
+      const actual = gameReducer(initState, {
+        type: MOVE_ACTIONS.left,
+      })
 
       expect(actual.player).toEqual({ x: 1, y: 3 })
     })
@@ -39,12 +37,9 @@ describe("move actions", () => {
 
   describe("move right", () => {
     it("should decrease the X value", () => {
-      const actual = gameReducer(
-        { player: { x: 2, y: 3 } },
-        {
-          type: MOVE_ACTIONS.right,
-        },
-      )
+      const actual = gameReducer(initState, {
+        type: MOVE_ACTIONS.right,
+      })
 
       expect(actual.player).toEqual({ x: 3, y: 3 })
     })

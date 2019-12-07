@@ -29,6 +29,15 @@ describe("move actions", () => {
 
       expect(actual).toEqual(state)
     })
+
+    it("cannot move to a negative y tile", () => {
+      const state = initState({ x: 2, y: 0 })
+      const actual = gameReducer(state, {
+        type: MOVE_ACTIONS.up,
+      })
+
+      expect(actual).toEqual(state)
+    })
   })
 
   describe("move down", () => {

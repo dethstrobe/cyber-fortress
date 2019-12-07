@@ -26,7 +26,7 @@ export const moveReducers: ReducerTypes = {
   [MOVE_ACTIONS.up](state: State) {
     const { x, y: currentY } = state.player,
       y = currentY - 1
-    if (state.map[y][x] === "X") {
+    if (y < 0 || state.map[y][x] === "X") {
       return state
     }
     return {

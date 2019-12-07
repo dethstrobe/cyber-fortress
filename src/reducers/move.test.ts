@@ -9,7 +9,7 @@ describe("move actions", () => {
       ["O", "O", "O", "X"],
       ["O", "O", "O", "X"],
       ["O", "O", "O", "O"],
-      ["O", "O", "O", "O"],
+      ["O", "O", "X", "O"],
     ],
   })
   describe("move up", () => {
@@ -47,6 +47,24 @@ describe("move actions", () => {
       })
 
       expect(actual.player).toEqual({ x: 0, y: 1 })
+    })
+
+    it("should not be able to move on to an X tile", () => {
+      const state = initState({ x: 2, y: 3 })
+      const actual = gameReducer(state, {
+        type: MOVE_ACTIONS.down,
+      })
+
+      expect(actual).toEqual(state)
+    })
+
+    it("cannot move be able to move the range of the map", () => {
+      const state = initState({ x: 1, y: 4 })
+      const actual = gameReducer(state, {
+        type: MOVE_ACTIONS.down,
+      })
+
+      expect(actual).toEqual(state)
     })
   })
   describe("move left", () => {

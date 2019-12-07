@@ -7,6 +7,8 @@ export enum MOVE_ACTIONS {
   right = "MOVE_RIGHT",
 }
 
+const wallTile = "X"
+
 export const moveActions = {
   up() {
     return { type: MOVE_ACTIONS.up }
@@ -26,7 +28,7 @@ export const moveReducers: ReducerTypes = {
   [MOVE_ACTIONS.up](state: State) {
     const { x, y: currentY } = state.player,
       y = currentY - 1
-    if (y < 0 || state.map[y][x] === "X") {
+    if (y < 0 || state.map[y][x] === wallTile) {
       return state
     }
     return {
@@ -38,11 +40,16 @@ export const moveReducers: ReducerTypes = {
     }
   },
   [MOVE_ACTIONS.down](state: State) {
+    const { x, y: currentY } = state.player,
+      y = currentY + 1
+    if (y >= state.map.length || state.map[y][x] === wallTile) {
+      return state
+    }
     return {
       ...state,
       player: {
         ...state.player,
-        y: state.player.y + 1,
+        y,
       },
     }
   },

@@ -24,11 +24,16 @@ export const moveActions = {
 
 export const moveReducers: ReducerTypes = {
   [MOVE_ACTIONS.up](state: State) {
+    const { x, y: currentY } = state.player,
+      y = currentY - 1
+    if (state.map[y][x] === "X") {
+      return state
+    }
     return {
       ...state,
       player: {
         ...state.player,
-        y: state.player.y - 1,
+        y,
       },
     }
   },

@@ -1,11 +1,14 @@
 import React from "react"
 import { Board } from "./board"
 import { render, fireEvent, waitForElement } from "@testing-library/react"
+import { State } from "../reducers/game.reducer"
 
 const center = {
   x: 512,
   y: 360,
 }
+
+const state = new State()
 
 describe("<Board/>", () => {
   const setup = (location = { x: 3, y: 3 }) => {
@@ -15,7 +18,9 @@ describe("<Board/>", () => {
       left: jest.fn(),
       right: jest.fn(),
     }
-    const board = render(<Board location={location} {...moveActionsMock} />)
+    const board = render(
+      <Board player={location} {...moveActionsMock} map={state.map} />,
+    )
     return {
       ...board,
       moveActionsMock,

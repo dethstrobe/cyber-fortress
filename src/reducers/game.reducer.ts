@@ -26,6 +26,7 @@ export class State {
     ["O", "O", "O", "O", "O", "O", "O", "O", "O", "O"],
     ["O", "O", "O", "O", "O", "O", "O", "O", "O", "O"],
   ]
+  enemies: PlayerState[] = []
 }
 
 const noAction = (state: State) => state

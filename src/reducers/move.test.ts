@@ -11,6 +11,7 @@ describe("move actions", () => {
       ["O", "O", "O", "O"],
       ["O", "O", "X", "O"],
     ],
+    enemies: [],
   })
   describe("move up", () => {
     it("should decrease the Y value", () => {

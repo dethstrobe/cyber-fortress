@@ -97,5 +97,17 @@ describe("move actions", () => {
 
       expect(actual.player).toEqual({ x: 3, y: 3 })
     })
+    it("should not be able to move on to a wall tile", () => {
+      const state = initState({ x: 2, y: 2 }),
+        actual = gameReducer(state, { type: MOVE_ACTIONS.right })
+
+      expect(actual).toBe(state)
+    })
+    it("should not move outside of the map", () => {
+      const state = initState({ x: 3, y: 4 }),
+        actual = gameReducer(state, { type: MOVE_ACTIONS.right })
+
+      expect(actual).toBe(state)
+    })
   })
 })

@@ -68,11 +68,16 @@ export const moveReducers: ReducerTypes = {
     }
   },
   [MOVE_ACTIONS.right](state: State) {
+    const { x: currentX, y } = state.player,
+      x = currentX + 1
+    if (x >= state.map[0].length || state.map[y][x] === wallTile) {
+      return state
+    }
     return {
       ...state,
       player: {
         ...state.player,
-        x: state.player.x + 1,
+        x,
       },
     }
   },

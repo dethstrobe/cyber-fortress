@@ -1,6 +1,11 @@
 import React, { useEffect } from "react"
 import { moveActions } from "../reducers/move"
-import { PlayerState, State, GameMap } from "../reducers/game.reducer"
+import {
+  PlayerState,
+  State,
+  GameMap,
+  EnemyState,
+} from "../reducers/game.reducer"
 import { connect } from "react-redux"
 import { renderBoard, Coordinates } from "./renderBoard"
 
@@ -11,6 +16,7 @@ type Props = {
   right: () => void
   player: PlayerState
   map: GameMap
+  enemies: EnemyState[]
 }
 
 function findCenter(canvas: HTMLCanvasElement, scale: number): Coordinates {
@@ -23,7 +29,15 @@ function findCenter(canvas: HTMLCanvasElement, scale: number): Coordinates {
 
 const scale = 100
 
-const Board: React.FC<Props> = ({ up, down, left, right, player, map }) => {
+const Board: React.FC<Props> = ({
+  up,
+  down,
+  left,
+  right,
+  player,
+  map,
+  enemies,
+}) => {
   const canvasRef = React.useRef<HTMLCanvasElement>(null)
 
   useEffect(() => {
@@ -71,6 +85,7 @@ const Board: React.FC<Props> = ({ up, down, left, right, player, map }) => {
 const mapStateToProps = (state: State) => ({
   player: state.player,
   map: state.map,
+  enemies: state.enemies,
 })
 
 export default connect(mapStateToProps, { ...moveActions })(Board)

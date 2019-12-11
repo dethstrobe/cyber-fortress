@@ -19,7 +19,12 @@ describe("<Board/>", () => {
       right: jest.fn(),
     }
     const board = render(
-      <Board player={location} {...moveActionsMock} map={state.map} />,
+      <Board
+        player={location}
+        {...moveActionsMock}
+        map={state.map}
+        enemies={[]}
+      />,
     )
     return {
       ...board,

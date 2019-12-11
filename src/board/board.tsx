@@ -51,6 +51,7 @@ const Board: React.FC<Props> = ({
         center,
         offset: { x: scale * player.x, y: scale * player.y },
         map,
+        enemies,
       })
   }, [player, map])
 

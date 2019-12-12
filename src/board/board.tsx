@@ -53,7 +53,7 @@ const Board: React.FC<Props> = ({
         map,
         enemies,
       })
-  }, [player, map])
+  }, [player, enemies, map])
 
   return (
     <canvas

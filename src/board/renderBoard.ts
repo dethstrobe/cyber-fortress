@@ -43,8 +43,9 @@ function drawPlayer(
   ctx: CanvasRenderingContext2D,
   center: Coordinates,
   scale: number,
+  color: string = "red",
 ) {
-  ctx.fillStyle = "red"
+  ctx.fillStyle = color
   ctx.fillRect(center.x, center.y, scale, scale)
 }
 
@@ -70,6 +71,7 @@ export const renderBoard = (
       ctx,
       { x: enemy.x * scale + offsetX, y: enemy.y * scale + offsetY },
       scale,
+      "blue",
     )
   })
 }

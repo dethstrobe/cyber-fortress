@@ -8,7 +8,7 @@ import {
   EnemyLocation,
 } from "../reducers/game.reducer"
 import { connect } from "react-redux"
-import { renderBoard, Coordinates } from "./renderBoard"
+import { renderBoard } from "./renderBoard"
 
 type Props = {
   up: () => void
@@ -58,7 +58,7 @@ const Board: React.FC<Props> = ({
         enemies,
         enemyLocations,
       })
-  }, [player, enemies, map, enemyLocations])
+  }, [player, enemies, map, enemyLocations, findCenter])
 
   return (
     <canvas

@@ -38,9 +38,17 @@ function drawBoard(
 ) {
   map.forEach((row, y) => {
     row.forEach((tile, x) => {
-      const { stroke, fill } = tileRenderOptions[tile]
-      ctx.fillStyle = fill
-      ctx.strokeStyle = stroke
+      const enemyTile = enemyLocations[y][x]
+
+      if (typeof enemyTile === "number") {
+        ctx.fillStyle = "blue"
+        ctx.strokeStyle = "white"
+      } else {
+        const { stroke, fill } = tileRenderOptions[tile]
+        ctx.fillStyle = fill
+        ctx.strokeStyle = stroke
+      }
+
       ctx.fillRect(x * scale + offsetX, y * scale + offsetY, scale, scale)
     })
   })

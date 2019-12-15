@@ -1,6 +1,6 @@
 import React from "react"
 import { Board } from "./board"
-import { render, fireEvent, waitForElement } from "@testing-library/react"
+import { render, fireEvent } from "@testing-library/react"
 import { State } from "../reducers/game.reducer"
 
 const center = {
@@ -23,7 +23,8 @@ describe("<Board/>", () => {
         player={location}
         {...moveActionsMock}
         map={state.map}
-        enemies={[]}
+        enemies={state.enemies}
+        enemyLocations={state.enemyLocations}
       />,
     )
     return {

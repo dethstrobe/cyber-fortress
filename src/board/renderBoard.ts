@@ -64,14 +64,4 @@ export const renderBoard = (
 
   // player
   drawPlayer(ctx, center, scale)
-
-  // enemies
-  enemies.forEach(enemy => {
-    drawPlayer(
-      ctx,
-      { x: enemy.x * scale + offsetX, y: enemy.y * scale + offsetY },
-      scale,
-      "blue",
-    )
-  })
 }

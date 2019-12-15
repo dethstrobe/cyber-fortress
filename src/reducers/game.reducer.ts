@@ -5,11 +5,17 @@ export interface PlayerState {
   y: number
 }
 
-export interface EnemyState extends PlayerState {}
+export interface EnemyState {
+  hp: number
+}
 
 export type TileOption = "O" | "X"
 
 export type GameMap = TileOption[][]
+
+export type EnemyLocation = (number | undefined)[][]
+
+const _ = undefined
 
 export class State {
   player: PlayerState = {
@@ -28,7 +34,19 @@ export class State {
     ["O", "O", "O", "O", "O", "O", "O", "O", "O", "O"],
     ["O", "O", "O", "O", "O", "O", "O", "O", "O", "O"],
   ]
-  enemies: EnemyState[] = [{ x: 2, y: 2 }]
+  enemyLocations: EnemyLocation = [
+    [_, _, _, _, _, _, _, _, _, _],
+    [_, _, _, _, _, _, _, _, _, _],
+    [_, _, 0, _, _, _, _, _, _, _],
+    [_, _, _, _, _, _, _, _, _, _],
+    [_, _, _, _, _, _, _, _, _, _],
+    [_, _, _, _, _, _, _, _, _, _],
+    [_, _, _, _, _, _, _, _, _, _],
+    [_, _, _, _, _, _, _, _, _, _],
+    [_, _, _, _, _, _, _, _, _, _],
+    [_, _, _, _, _, _, _, _, _, _],
+  ]
+  enemies: EnemyState[] = [{ hp: 3 }]
 }
 
 const noAction = (state: State) => state

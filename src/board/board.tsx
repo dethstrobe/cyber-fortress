@@ -1,10 +1,11 @@
-import React, { useEffect } from "react"
+import React, { useEffect, useCallback } from "react"
 import { moveActions } from "../reducers/move"
 import {
   PlayerState,
   State,
   GameMap,
   EnemyState,
+  EnemyLocation,
 } from "../reducers/game.reducer"
 import { connect } from "react-redux"
 import { renderBoard, Coordinates } from "./renderBoard"
@@ -16,15 +17,8 @@ type Props = {
   right: () => void
   player: PlayerState
   map: GameMap
+  enemyLocations: EnemyLocation
   enemies: EnemyState[]
-}
-
-function findCenter(canvas: HTMLCanvasElement, scale: number): Coordinates {
-  const halfScale = scale / 2
-  return {
-    x: canvas.width / 2 - halfScale,
-    y: canvas.height / 2 - halfScale,
-  }
 }
 
 const scale = 100
@@ -37,14 +31,24 @@ const Board: React.FC<Props> = ({
   player,
   map,
   enemies,
+  enemyLocations,
 }) => {
   const canvasRef = React.useRef<HTMLCanvasElement>(null)
+
+  const findCenter = useCallback((canvas: HTMLCanvasElement) => {
+    const halfScale = scale / 2
+
+    return {
+      x: canvas.width / 2 - halfScale,
+      y: canvas.height / 2 - halfScale,
+    }
+  }, [])
 
   useEffect(() => {
     const canvas = canvasRef.current
     if (canvas === null) return
     const ctx = canvas.getContext("2d"),
-      center = findCenter(canvas, scale)
+      center = findCenter(canvas)
     if (ctx)
       renderBoard(ctx, {
         scale,
@@ -52,8 +56,9 @@ const Board: React.FC<Props> = ({
         offset: { x: scale * player.x, y: scale * player.y },
         map,
         enemies,
+        enemyLocations,
       })
-  }, [player, enemies, map])
+  }, [player, enemies, map, enemyLocations])
 
   return (
     <canvas
@@ -63,7 +68,7 @@ const Board: React.FC<Props> = ({
       height={window.innerHeight}
       onClick={e => {
         if (!canvasRef.current) return
-        const center = findCenter(canvasRef.current, scale)
+        const center = findCenter(canvasRef.current)
         const loc = {
           x: Math.floor((e.clientX - center.x) / scale),
           y: Math.floor((e.clientY - center.y) / scale),
@@ -83,10 +88,11 @@ const Board: React.FC<Props> = ({
   )
 }
 
-const mapStateToProps = (state: State) => ({
-  player: state.player,
-  map: state.map,
-  enemies: state.enemies,
+const mapStateToProps = ({ player, map, enemies, enemyLocations }: State) => ({
+  player,
+  map,
+  enemies,
+  enemyLocations,
 })
 
 export default connect(mapStateToProps, { ...moveActions })(Board)

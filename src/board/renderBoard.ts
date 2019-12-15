@@ -1,4 +1,9 @@
-import { GameMap, TileOption, EnemyState } from "../reducers/game.reducer"
+import {
+  GameMap,
+  TileOption,
+  EnemyState,
+  EnemyLocation,
+} from "../reducers/game.reducer"
 
 export interface Coordinates {
   x: number
@@ -11,6 +16,7 @@ interface BoardOptions {
   center: Coordinates
   map: GameMap
   enemies: EnemyState[]
+  enemyLocations: EnemyLocation
 }
 
 type TileOptions = {
@@ -25,6 +31,7 @@ const tileRenderOptions: TileOptions = {
 function drawBoard(
   ctx: CanvasRenderingContext2D,
   map: TileOption[][],
+  enemyLocations: EnemyLocation,
   scale: number,
   offsetX: number,
   offsetY: number,
@@ -51,7 +58,7 @@ function drawPlayer(
 
 export const renderBoard = (
   ctx: CanvasRenderingContext2D,
-  { scale, center, offset, map, enemies }: BoardOptions,
+  { scale, center, offset, map, enemies, enemyLocations }: BoardOptions,
 ) => {
   const { width, height } = ctx.canvas,
     offsetX = center.x - offset.x,
@@ -60,7 +67,7 @@ export const renderBoard = (
   ctx.clearRect(0, 0, width, height)
   ctx.beginPath()
 
-  drawBoard(ctx, map, scale, offsetX, offsetY)
+  drawBoard(ctx, map, enemyLocations, scale, offsetX, offsetY)
 
   // player
   drawPlayer(ctx, center, scale)

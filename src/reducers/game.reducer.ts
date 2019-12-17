@@ -15,7 +15,7 @@ export type GameMap = TileOption[][]
 
 export type EnemyLocation = (number | undefined)[][]
 
-const _ = undefined
+export const _ = undefined
 
 export class State {
   player: PlayerState = {

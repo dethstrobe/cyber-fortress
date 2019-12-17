@@ -1,4 +1,4 @@
-import gameReducer, { State } from "./game.reducer"
+import gameReducer, { State, _ } from "./game.reducer"
 import { MOVE_ACTIONS } from "./move"
 
 describe("move actions", () => {
@@ -11,7 +11,18 @@ describe("move actions", () => {
       ["O", "O", "O", "O"],
       ["O", "O", "X", "O"],
     ],
-    enemies: [],
+    enemyLocations: [
+      [_, _, _, _],
+      [_, 0, _, _],
+      [_, _, _, _],
+      [_, _, _, _],
+      [_, _, _, _],
+    ],
+    enemies: [
+      {
+        hp: 3,
+      },
+    ],
   })
   describe("move up", () => {
     it("should decrease the Y value", () => {
@@ -24,6 +35,15 @@ describe("move actions", () => {
 
     it("should not be able to move on to an X tile", () => {
       const state = initState({ x: 3, y: 3 })
+      const actual = gameReducer(state, {
+        type: MOVE_ACTIONS.up,
+      })
+
+      expect(actual).toEqual(state)
+    })
+
+    it("should not be able to move on a tile with an enemy", () => {
+      const state = initState({ x: 1, y: 2 })
       const actual = gameReducer(state, {
         type: MOVE_ACTIONS.up,
       })

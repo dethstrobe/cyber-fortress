@@ -64,7 +64,11 @@ export const moveReducers: ReducerTypes = {
   [MOVE_ACTIONS.left](state: State) {
     const { x: currentX, y } = state.player,
       x = currentX - 1
-    if (x < 0 || state.map[y][x] === wallTile) {
+    if (
+      x < 0 ||
+      state.map[y][x] === wallTile ||
+      typeof state.enemyLocations[y][x] === "number"
+    ) {
       return state
     }
     return {

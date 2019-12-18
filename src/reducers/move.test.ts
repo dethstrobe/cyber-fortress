@@ -79,6 +79,15 @@ describe("move actions", () => {
       expect(actual).toEqual(state)
     })
 
+    it("should not be able to move on a tile with an enemy", () => {
+      const state = initState({ x: 1, y: 0 })
+      const actual = gameReducer(state, {
+        type: MOVE_ACTIONS.down,
+      })
+
+      expect(actual).toEqual(state)
+    })
+
     it("cannot move be able to move the range of the map", () => {
       const state = initState({ x: 1, y: 4 })
       const actual = gameReducer(state, {

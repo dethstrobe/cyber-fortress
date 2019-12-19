@@ -24,15 +24,21 @@ export const moveActions = {
   },
 }
 
+const isValidTileToMoveTo = (
+  { map, enemyLocations }: State,
+  isTileOnBoard: boolean,
+  x: number,
+  y: number,
+) =>
+  isTileOnBoard ||
+  map[y][x] === wallTile ||
+  typeof enemyLocations[y][x] === "number"
+
 export const moveReducers: ReducerTypes = {
   [MOVE_ACTIONS.up](state: State) {
     const { x, y: currentY } = state.player,
       y = currentY - 1
-    if (
-      y < 0 ||
-      state.map[y][x] === wallTile ||
-      typeof state.enemyLocations[y][x] === "number"
-    ) {
+    if (isValidTileToMoveTo(state, y < 0, x, y)) {
       return state
     }
     return {
@@ -46,11 +52,7 @@ export const moveReducers: ReducerTypes = {
   [MOVE_ACTIONS.down](state: State) {
     const { x, y: currentY } = state.player,
       y = currentY + 1
-    if (
-      y >= state.map.length ||
-      state.map[y][x] === wallTile ||
-      typeof state.enemyLocations[y][x] === "number"
-    ) {
+    if (isValidTileToMoveTo(state, y >= state.map.length, x, y)) {
       return state
     }
     return {
@@ -64,11 +66,7 @@ export const moveReducers: ReducerTypes = {
   [MOVE_ACTIONS.left](state: State) {
     const { x: currentX, y } = state.player,
       x = currentX - 1
-    if (
-      x < 0 ||
-      state.map[y][x] === wallTile ||
-      typeof state.enemyLocations[y][x] === "number"
-    ) {
+    if (isValidTileToMoveTo(state, x < 0, x, y)) {
       return state
     }
     return {
@@ -82,11 +80,7 @@ export const moveReducers: ReducerTypes = {
   [MOVE_ACTIONS.right](state: State) {
     const { x: currentX, y } = state.player,
       x = currentX + 1
-    if (
-      x >= state.map[0].length ||
-      state.map[y][x] === wallTile ||
-      typeof state.enemyLocations[y][x] === "number"
-    ) {
+    if (isValidTileToMoveTo(state, x >= state.map[0].length, x, y)) {
       return state
     }
     return {

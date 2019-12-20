@@ -35,7 +35,7 @@ const isValidTileToMoveTo = (
   typeof enemyLocations[y][x] === "number"
 
 export const moveReducers: ReducerTypes = {
-  [MOVE_ACTIONS.up](state: State) {
+  [MOVE_ACTIONS.up](state) {
     const { x, y: currentY } = state.player,
       y = currentY - 1
     if (isValidTileToMoveTo(state, y < 0, x, y)) {
@@ -49,7 +49,7 @@ export const moveReducers: ReducerTypes = {
       },
     }
   },
-  [MOVE_ACTIONS.down](state: State) {
+  [MOVE_ACTIONS.down](state) {
     const { x, y: currentY } = state.player,
       y = currentY + 1
     if (isValidTileToMoveTo(state, y >= state.map.length, x, y)) {
@@ -63,7 +63,7 @@ export const moveReducers: ReducerTypes = {
       },
     }
   },
-  [MOVE_ACTIONS.left](state: State) {
+  [MOVE_ACTIONS.left](state) {
     const { x: currentX, y } = state.player,
       x = currentX - 1
     if (isValidTileToMoveTo(state, x < 0, x, y)) {
@@ -77,7 +77,7 @@ export const moveReducers: ReducerTypes = {
       },
     }
   },
-  [MOVE_ACTIONS.right](state: State) {
+  [MOVE_ACTIONS.right](state) {
     const { x: currentX, y } = state.player,
       x = currentX + 1
     if (isValidTileToMoveTo(state, x >= state.map[0].length, x, y)) {

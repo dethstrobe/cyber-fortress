@@ -49,10 +49,12 @@ export class State {
   enemies: EnemyState[] = [{ hp: 3 }]
 }
 
-const noAction = (state: State) => state
+type ReducerFunction = (state: State) => State
+
+const noAction: ReducerFunction = (state: State) => state
 
 export type ReducerTypes = {
-  [key in MOVE_ACTIONS]: (state: State) => State
+  [key in MOVE_ACTIONS]: ReducerFunction
 }
 
 const reducers: ReducerTypes = {

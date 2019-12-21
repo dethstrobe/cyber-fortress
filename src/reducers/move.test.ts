@@ -2,28 +2,30 @@ import gameReducer, { State, _ } from "./game.reducer"
 import { MOVE_ACTIONS } from "./move"
 
 describe("move actions", () => {
-  const initState = ({ x, y } = { x: 2, y: 3 }): State => ({
-    player: { x, y },
-    map: [
+  const initState = ({ x, y } = { x: 2, y: 3 }): State => {
+    const newState = new State()
+    newState.player = { x, y }
+    newState.map = [
       ["O", "O", "O", "X"],
       ["O", "O", "O", "X"],
       ["O", "O", "O", "X"],
       ["O", "O", "O", "O"],
       ["O", "O", "X", "O"],
-    ],
-    enemyLocations: [
+    ]
+    newState.enemyLocations = [
       [_, _, _, _],
       [_, 0, _, _],
       [_, _, _, _],
       [_, _, _, _],
       [_, _, _, _],
-    ],
-    enemies: [
+    ]
+    newState.enemies = [
       {
         hp: 3,
       },
-    ],
-  })
+    ]
+    return newState
+  }
   describe("move up", () => {
     it("should decrease the Y value", () => {
       const actual = gameReducer(initState(), {

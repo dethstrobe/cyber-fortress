@@ -1,10 +1,14 @@
-import { State, ReducerTypes } from "./game.reducer"
+import { State, ReducerTypes, ReducerFunction } from "./game.reducer"
 
 export enum MOVE_ACTIONS {
   up = "MOVE_UP",
   down = "MOVE_DOWN",
   left = "MOVE_LEFT",
   right = "MOVE_RIGHT",
+}
+
+export type MoveReducerTypes = {
+  [key in MOVE_ACTIONS]: ReducerFunction
 }
 
 const wallTile = "X"

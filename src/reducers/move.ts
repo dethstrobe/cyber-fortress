@@ -1,4 +1,4 @@
-import { State, ReducerTypes, ReducerFunction } from "./game.reducer"
+import { State, ReducerFunction } from "./game.reducer"
 
 export enum MOVE_ACTIONS {
   up = "MOVE_UP",
@@ -38,7 +38,7 @@ const isValidTileToMoveTo = (
   map[y][x] === wallTile ||
   typeof enemyLocations[y][x] === "number"
 
-export const moveReducers: ReducerTypes = {
+export const moveReducers: MoveReducerTypes = {
   [MOVE_ACTIONS.up](state) {
     const { x, y: currentY } = state.player,
       y = currentY - 1

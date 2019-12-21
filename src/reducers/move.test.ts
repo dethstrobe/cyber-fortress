@@ -19,11 +19,6 @@ describe("move actions", () => {
       [_, _, _, _],
       [_, _, _, _],
     ]
-    newState.enemies = [
-      {
-        hp: 3,
-      },
-    ]
     return newState
   }
   describe("move up", () => {

@@ -1,4 +1,9 @@
 import { moveReducers, MOVE_ACTIONS, MoveReducerTypes } from "./move"
+import {
+  ActionReducerTypes,
+  actionReducers,
+  ACTION_ACTIONS,
+} from "./playerActions"
 
 export interface PlayerState {
   x: number
@@ -52,21 +57,23 @@ export class State {
   enemies: EnemyState[] = [{ hp: 3 }]
 }
 
-export type ReducerFunction = (state: State) => State
+export type ReducerFunction = (state: State, payload?: any) => State
 
 const noAction: ReducerFunction = (state: State) => state
 
-export type ReducerTypes = MoveReducerTypes
+export type ReducerTypes = MoveReducerTypes & ActionReducerTypes
 
 const reducers: ReducerTypes = {
   ...moveReducers,
+  ...actionReducers,
 }
 
-export interface MoveAction {
-  type: MOVE_ACTIONS
+export interface ActionCreators {
+  type: MOVE_ACTIONS | ACTION_ACTIONS
+  payload: any
 }
 
 const initState = new State()
 
-export default (state: State = initState, { type }: MoveAction) =>
-  (reducers[type] || noAction)(state)
+export default (state: State = initState, { type, payload }: ActionCreators) =>
+  (reducers[type] || noAction)(state, payload)

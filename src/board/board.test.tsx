@@ -1,5 +1,5 @@
 import React from "react"
-import { Board } from "./board"
+import { Board } from "./Board"
 import { render, fireEvent } from "@testing-library/react"
 import { State } from "../reducers/game.reducer"
 

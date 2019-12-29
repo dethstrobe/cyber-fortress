@@ -1,14 +1,10 @@
 import {
+  Coordinates,
   GameMap,
   TileOption,
   EnemyState,
   EnemyLocation,
-} from "../reducers/game.reducer"
-
-export interface Coordinates {
-  x: number
-  y: number
-}
+} from "../reducers/types"
 
 interface BoardOptions {
   scale: number

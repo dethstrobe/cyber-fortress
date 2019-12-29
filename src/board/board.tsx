@@ -1,12 +1,12 @@
 import React, { useEffect, useCallback } from "react"
 import { moveActions } from "../reducers/move"
+import { State } from "../reducers/game.reducer"
 import {
   PlayerState,
-  State,
   GameMap,
   EnemyState,
   EnemyLocation,
-} from "../reducers/game.reducer"
+} from "../reducers/types"
 import { connect } from "react-redux"
 import { renderBoard } from "./renderBoard"
 

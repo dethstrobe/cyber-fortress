@@ -4,25 +4,15 @@ import {
   actionReducers,
   ACTION_ACTIONS,
 } from "./playerActions"
-
-export interface PlayerState {
-  x: number
-  y: number
-}
-
-export interface EnemyState {
-  hp: number
-}
-
-export type TileOption = "O" | "X"
-
-export type GameMap = TileOption[][]
-
-export type EnemyLocation = (number | undefined)[][]
+import {
+  EnemyState,
+  EnemyLocation,
+  GameMap,
+  PlayerState,
+  PlayerActions,
+} from "./types"
 
 export const _ = undefined
-
-export type PlayerActions = "move" | "attack" | "wait"
 
 export class State {
   player: PlayerState = {
@@ -73,7 +63,7 @@ export interface ActionCreators {
   payload: any
 }
 
-const initState = new State()
-
-export default (state: State = initState, { type, payload }: ActionCreators) =>
-  (reducers[type] || noAction)(state, payload)
+export default (
+  state: State = new State(),
+  { type, payload }: ActionCreators,
+) => (reducers[type] || noAction)(state, payload)

@@ -1,4 +1,5 @@
-import { ReducerFunction, PlayerActions } from "./game.reducer"
+import { ReducerFunction } from "./game.reducer"
+import { PlayerActions } from "./types"
 
 export enum ACTION_ACTIONS {
   changeAction = "CHANGE_ACTION",

@@ -1,16 +1,5 @@
 import { moveReducers, MOVE_ACTIONS, MoveReducerTypes } from "./move"
-import {
-  ActionReducerTypes,
-  actionReducers,
-  ACTION_ACTIONS,
-} from "./playerActions"
-import {
-  EnemyState,
-  EnemyLocation,
-  GameMap,
-  PlayerState,
-  PlayerActions,
-} from "./types"
+import { EnemyState, EnemyLocation, GameMap, PlayerState } from "./types"
 
 export const _ = undefined
 
@@ -19,7 +8,6 @@ export class State {
     x: 0,
     y: 0,
   }
-  action: PlayerActions = "move"
   map: GameMap = [
     ["O", "O", "O", "X", "O", "O", "O", "X", "O", "O"],
     ["O", "O", "O", "X", "O", "O", "O", "X", "O", "O"],
@@ -51,16 +39,15 @@ export type ReducerFunction = (state: State, payload?: any) => State
 
 const noAction: ReducerFunction = (state: State) => state
 
-export type ReducerTypes = MoveReducerTypes & ActionReducerTypes
+export type ReducerTypes = MoveReducerTypes
 
 const reducers: ReducerTypes = {
   ...moveReducers,
-  ...actionReducers,
 }
 
-export interface ActionCreators {
-  type: MOVE_ACTIONS | ACTION_ACTIONS
-  payload: any
+interface ActionCreators {
+  type: MOVE_ACTIONS
+  payload?: any
 }
 
 export default (

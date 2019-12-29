@@ -15,4 +15,4 @@ export type GameMap = TileOption[][]
 
 export type EnemyLocation = (number | undefined)[][]
 
-export type PlayerActions = "move" | "attack" | "wait"
+// export type PlayerActions = "move" | "attack" | "wait"

@@ -9,6 +9,7 @@ import {
 } from "../reducers/types"
 import { connect } from "react-redux"
 import { renderBoard } from "./renderBoard"
+import { PlayerActions } from "../Menu/Menu"
 
 type Props = {
   up: () => void
@@ -19,6 +20,7 @@ type Props = {
   map: GameMap
   enemyLocations: EnemyLocation
   enemies: EnemyState[]
+  selectedPlayerAction: PlayerActions
 }
 
 const scale = 100

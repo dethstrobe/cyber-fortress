@@ -1,4 +1,5 @@
 import React from "react"
+import "./Menu.css"
 
 export type PlayerActions = "move" | "attack" | "wait"
 
@@ -7,18 +8,20 @@ export interface Props {
 }
 
 export const Menu: React.FC<Props> = ({ setPlayerAction }) => (
-  <menu>
-    <ul>
-      <li>
-        <label htmlFor="player-action">Actions</label>
-        <select
-          id="player-action"
-          onChange={e => setPlayerAction(e.target.value as PlayerActions)}
-        >
-          <option value="move">Move</option>
-          <option value="attack">Attack</option>
-          <option value="wait">Wait</option>
-        </select>
+  <menu className="player-menu">
+    <ul className="player-menu--actions">
+      <li className="player-menu--actions--action">
+        <label>
+          Actions
+          <select
+            className="player-menu--actions--action--select-action"
+            onChange={e => setPlayerAction(e.target.value as PlayerActions)}
+          >
+            <option value="move">Move</option>
+            <option value="attack">Attack</option>
+            <option value="wait">Wait</option>
+          </select>
+        </label>
       </li>
     </ul>
   </menu>

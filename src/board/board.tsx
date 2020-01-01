@@ -11,7 +11,7 @@ import { connect } from "react-redux"
 import { renderBoard } from "./renderBoard"
 import { PlayerActions } from "../Menu/Menu"
 
-type Props = {
+export interface Props {
   up: () => void
   down: () => void
   left: () => void

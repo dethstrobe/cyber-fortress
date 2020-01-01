@@ -11,4 +11,13 @@ describe("attack actions", () => {
 
     expect(actual.enemies[0].hp).toBe(2)
   })
+
+  it("should do nothing if there if a non enemy corrdinates are given", () => {
+    const actual = gameReducer(initState, {
+      type: ACTIONS.ATTACK,
+      payload: { x: 0, y: 0 },
+    })
+
+    expect(actual).toBe(initState)
+  })
 })

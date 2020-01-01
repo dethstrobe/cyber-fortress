@@ -1,30 +1,27 @@
 import { State, ReducerFunction } from "./game.reducer"
-
-export enum MOVE_ACTIONS {
-  up = "MOVE_UP",
-  down = "MOVE_DOWN",
-  left = "MOVE_LEFT",
-  right = "MOVE_RIGHT",
-}
+import { ACTIONS } from "./types"
 
 export type MoveReducerTypes = {
-  [key in MOVE_ACTIONS]: ReducerFunction
+  [ACTIONS.up]: ReducerFunction
+  [ACTIONS.down]: ReducerFunction
+  [ACTIONS.left]: ReducerFunction
+  [ACTIONS.right]: ReducerFunction
 }
 
 const wallTile = "X"
 
 export const moveActions = {
   up() {
-    return { type: MOVE_ACTIONS.up }
+    return { type: ACTIONS.up }
   },
   down() {
-    return { type: MOVE_ACTIONS.down }
+    return { type: ACTIONS.down }
   },
   left() {
-    return { type: MOVE_ACTIONS.left }
+    return { type: ACTIONS.left }
   },
   right() {
-    return { type: MOVE_ACTIONS.right }
+    return { type: ACTIONS.right }
   },
 }
 
@@ -39,7 +36,7 @@ const isValidTileToMoveTo = (
   typeof enemyLocations[y][x] === "number"
 
 export const moveReducers: MoveReducerTypes = {
-  [MOVE_ACTIONS.up](state) {
+  [ACTIONS.up](state) {
     const { x, y: currentY } = state.player,
       y = currentY - 1
     if (isValidTileToMoveTo(state, y < 0, x, y)) {
@@ -53,7 +50,7 @@ export const moveReducers: MoveReducerTypes = {
       },
     }
   },
-  [MOVE_ACTIONS.down](state) {
+  [ACTIONS.down](state) {
     const { x, y: currentY } = state.player,
       y = currentY + 1
     if (isValidTileToMoveTo(state, y >= state.map.length, x, y)) {
@@ -67,7 +64,7 @@ export const moveReducers: MoveReducerTypes = {
       },
     }
   },
-  [MOVE_ACTIONS.left](state) {
+  [ACTIONS.left](state) {
     const { x: currentX, y } = state.player,
       x = currentX - 1
     if (isValidTileToMoveTo(state, x < 0, x, y)) {
@@ -81,7 +78,7 @@ export const moveReducers: MoveReducerTypes = {
       },
     }
   },
-  [MOVE_ACTIONS.right](state) {
+  [ACTIONS.right](state) {
     const { x: currentX, y } = state.player,
       x = currentX + 1
     if (isValidTileToMoveTo(state, x >= state.map[0].length, x, y)) {

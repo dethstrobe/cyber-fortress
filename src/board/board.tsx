@@ -11,17 +11,25 @@ import { connect } from "react-redux"
 import { renderBoard } from "./renderBoard"
 import { PlayerActions } from "../Menu/Menu"
 
-export interface Props {
-  up: () => void
-  down: () => void
-  left: () => void
-  right: () => void
+interface StateProps {
   player: PlayerState
   map: GameMap
   enemyLocations: EnemyLocation
   enemies: EnemyState[]
+}
+
+interface OwnProps {
   selectedPlayerAction: PlayerActions
 }
+
+interface DispatchProps {
+  up: () => void
+  down: () => void
+  left: () => void
+  right: () => void
+}
+
+export type Props = StateProps & DispatchProps & OwnProps
 
 const scale = 100
 
@@ -90,12 +98,13 @@ const Board: React.FC<Props> = ({
   )
 }
 
-const mapStateToProps = ({ player, map, enemies, enemyLocations }: State) => ({
-  player,
-  map,
-  enemies,
-  enemyLocations,
-})
-
-export default connect(mapStateToProps, { ...moveActions })(Board)
+export default connect<StateProps, DispatchProps, OwnProps, State>(
+  ({ player, map, enemies, enemyLocations }) => ({
+    player,
+    map,
+    enemies,
+    enemyLocations,
+  }),
+  moveActions,
+)(Board)
 export { Board }

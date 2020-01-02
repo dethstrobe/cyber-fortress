@@ -12,16 +12,14 @@ const center = {
 const { map, enemies, enemyLocations } = new State()
 
 describe("<Board/>", () => {
-  const setup = (
-    player = { x: 3, y: 3 },
-    selectedPlayerAction: PlayerActions = "move",
-  ) => {
+  const setup = (selectedPlayerAction: PlayerActions = "move") => {
     const props: Props = {
       up: jest.fn(),
       down: jest.fn(),
       left: jest.fn(),
       right: jest.fn(),
-      player,
+      attack: jest.fn(),
+      player: { x: 3, y: 3 },
       map,
       enemies,
       enemyLocations,
@@ -99,7 +97,15 @@ describe("<Board/>", () => {
     })
 
     describe("attack", () => {
-      it("should dispatch an attack action when clicking on a tile", () => {})
+      it("should dispatch an attack action when clicking on a tile", () => {
+        const { getByTestId, props } = setup("attack")
+        fireEvent.click(getByTestId("game-board"), {
+          clientX: center.x + 100,
+          clientY: center.y - 100,
+        })
+        expect(props.up).not.toHaveBeenCalled()
+        expect(props.attack).toHaveBeenCalledWith({ x: 4, y: 2 })
+      })
     })
   })
 })

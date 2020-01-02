@@ -6,10 +6,12 @@ import {
   GameMap,
   EnemyState,
   EnemyLocation,
+  Coordinates,
 } from "../reducers/types"
 import { connect } from "react-redux"
 import { renderBoard } from "./renderBoard"
 import { PlayerActions } from "../Menu/Menu"
+import { AttackAction } from "../reducers/attack"
 
 interface StateProps {
   player: PlayerState
@@ -27,6 +29,7 @@ interface DispatchProps {
   down: () => void
   left: () => void
   right: () => void
+  attack: (payload: Coordinates) => void
 }
 
 export type Props = StateProps & DispatchProps & OwnProps
@@ -38,10 +41,12 @@ const Board: React.FC<Props> = ({
   down,
   left,
   right,
+  attack,
   player,
   map,
   enemies,
   enemyLocations,
+  selectedPlayerAction,
 }) => {
   const canvasRef = React.useRef<HTMLCanvasElement>(null)
 
@@ -84,14 +89,18 @@ const Board: React.FC<Props> = ({
           y: Math.floor((e.clientY - center.y) / scale),
         }
 
-        if (loc.y < 0) {
-          up()
-        } else if (loc.y > 0) {
-          down()
-        } else if (loc.x > 0) {
-          right()
-        } else if (loc.x < 0) {
-          left()
+        if (selectedPlayerAction === "move") {
+          if (loc.y < 0) {
+            up()
+          } else if (loc.y > 0) {
+            down()
+          } else if (loc.x > 0) {
+            right()
+          } else if (loc.x < 0) {
+            left()
+          }
+        } else if (selectedPlayerAction === "attack") {
+          attack({ x: player.x + loc.x, y: player.y + loc.y })
         }
       }}
     />
@@ -105,6 +114,6 @@ export default connect<StateProps, DispatchProps, OwnProps, State>(
     enemies,
     enemyLocations,
   }),
-  moveActions,
+  { ...moveActions, attack: AttackAction },
 )(Board)
 export { Board }

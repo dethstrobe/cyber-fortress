@@ -1,10 +1,6 @@
 export enum ACTIONS {
   ATTACK = "ATTACK",
-  // MOVE = "MOVE",
-  up = "MOVE_UP",
-  down = "MOVE_DOWN",
-  left = "MOVE_LEFT",
-  right = "MOVE_RIGHT",
+  MOVE = "MOVE",
 }
 
 export interface Coordinates {
@@ -17,7 +13,9 @@ export interface ActionObject {
   payload?: any
 }
 
-export interface PlayerState extends Coordinates {}
+export interface PlayerState extends Coordinates {
+  speed: number
+}
 
 export interface EnemyState {
   hp: number

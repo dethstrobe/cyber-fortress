@@ -25,10 +25,7 @@ interface OwnProps {
 }
 
 interface DispatchProps {
-  up: () => void
-  down: () => void
-  left: () => void
-  right: () => void
+  move: (payload: Coordinates) => void
   attack: (payload: Coordinates) => void
 }
 
@@ -37,10 +34,7 @@ export type Props = StateProps & DispatchProps & OwnProps
 const scale = 100
 
 const Board: React.FC<Props> = ({
-  up,
-  down,
-  left,
-  right,
+  move,
   attack,
   player,
   map,
@@ -90,15 +84,7 @@ const Board: React.FC<Props> = ({
         }
 
         if (selectedPlayerAction === "move") {
-          if (loc.y < 0) {
-            up()
-          } else if (loc.y > 0) {
-            down()
-          } else if (loc.x > 0) {
-            right()
-          } else if (loc.x < 0) {
-            left()
-          }
+          move({ x: player.x + loc.x, y: player.y + loc.y })
         } else if (selectedPlayerAction === "attack") {
           attack({ x: player.x + loc.x, y: player.y + loc.y })
         }

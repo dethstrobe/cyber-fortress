@@ -13,24 +13,21 @@ export const moveActions = {
   },
 }
 
-const isValidTileToMoveTo = (
-  { map, enemyLocations }: State,
-  isTileOnBoard: boolean,
-  x: number,
-  y: number,
-) =>
-  isTileOnBoard ||
-  map[y][x] === wallTile ||
-  typeof enemyLocations[y][x] === "number"
+const isTileOnBoard = ({ map }: State, { x, y }: Coordinates): boolean =>
+  y > 0 && x > 0 && y < map.length && x < map[0].length
 
 export const moveReducers: MoveReducerTypes = {
-  [ACTIONS.MOVE](state, payload: Coordinates) {
-    return {
-      ...state,
-      player: {
-        ...state.player,
-        ...payload,
-      },
+  [ACTIONS.MOVE](state, nextStep: Coordinates) {
+    if (isTileOnBoard(state, nextStep)) {
+      return {
+        ...state,
+        player: {
+          ...state.player,
+          ...nextStep,
+        },
+      }
     }
+
+    return state
   },
 }

@@ -14,7 +14,7 @@ export const moveActions = {
 }
 
 const isTileOnBoard = ({ map }: State, { x, y }: Coordinates): boolean =>
-  y > 0 && x > 0 && y < map.length && x < map[0].length
+  y >= 0 && x >= 0 && y < map.length && x < map[0].length
 
 export const moveReducers: MoveReducerTypes = {
   [ACTIONS.MOVE](state, nextStep: Coordinates) {

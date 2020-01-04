@@ -42,6 +42,28 @@ describe("move action", () => {
     expect(actual.player.y).toEqual(0)
   })
 
+  describe("collision detection", () => {
+    it("should not allow you to move through obstacles", () => {
+      const actual = gameReducer(initState({ x: 1, y: 4 }), {
+        type: ACTIONS.MOVE,
+        payload: { x: 3, y: 4 },
+      })
+
+      expect(actual.player.x).toEqual(1)
+      expect(actual.player.y).toEqual(4)
+    })
+
+    it("should not allow you to move through obstacles going from right to left", () => {
+      const actual = gameReducer(initState({ x: 3, y: 4 }), {
+        type: ACTIONS.MOVE,
+        payload: { x: 1, y: 4 },
+      })
+
+      expect(actual.player.x).toEqual(3)
+      expect(actual.player.y).toEqual(4)
+    })
+  })
+
   describe("should not allow you to move", () => {
     it("above off the map", () => {
       const actual = gameReducer(initState({ x: 2, y: 0 }), {

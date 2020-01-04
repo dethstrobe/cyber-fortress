@@ -32,6 +32,16 @@ describe("move action", () => {
     expect(actual.player.y).toEqual(0)
   })
 
+  it("should not allow you to move beyond the player range", () => {
+    const actual = gameReducer(initState({ x: 0, y: 0 }), {
+      type: ACTIONS.MOVE,
+      payload: { x: 0, y: 3 },
+    })
+
+    expect(actual.player.x).toEqual(0)
+    expect(actual.player.y).toEqual(0)
+  })
+
   describe("should not allow you to move", () => {
     it("above off the map", () => {
       const actual = gameReducer(initState({ x: 2, y: 0 }), {

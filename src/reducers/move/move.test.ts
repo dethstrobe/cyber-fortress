@@ -8,7 +8,7 @@ describe("move action", () => {
     newState.map = [
       ["O", "O", "O", "X"],
       ["O", "O", "O", "X"],
-      ["O", "O", "O", "X"],
+      ["O", "O", "X", "X"],
       ["O", "O", "O", "O"],
       ["O", "O", "X", "O"],
     ]
@@ -43,7 +43,7 @@ describe("move action", () => {
   })
 
   describe("collision detection", () => {
-    it("should not allow you to move through obstacles", () => {
+    it("should not allow the player to move through obstacles", () => {
       const actual = gameReducer(initState({ x: 1, y: 4 }), {
         type: ACTIONS.MOVE,
         payload: { x: 3, y: 4 },
@@ -53,7 +53,7 @@ describe("move action", () => {
       expect(actual.player.y).toEqual(4)
     })
 
-    it("should not allow you to move through obstacles going from right to left", () => {
+    it("should not allow the player to move through obstacles going from right to left", () => {
       const actual = gameReducer(initState({ x: 3, y: 4 }), {
         type: ACTIONS.MOVE,
         payload: { x: 1, y: 4 },
@@ -61,6 +61,16 @@ describe("move action", () => {
 
       expect(actual.player.x).toEqual(3)
       expect(actual.player.y).toEqual(4)
+    })
+
+    it("should not allow move throw walls diagonally", () => {
+      const actual = gameReducer(initState({ x: 3, y: 3 }), {
+        type: ACTIONS.MOVE,
+        payload: { x: 2, y: 1 },
+      })
+
+      expect(actual.player.x).toEqual(3)
+      expect(actual.player.y).toEqual(3)
     })
   })
 

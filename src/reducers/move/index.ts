@@ -17,6 +17,35 @@ const isTileOnBoard = ({ map }: State, { x, y }: Coordinates): boolean =>
 const findVector = (start: Coordinates, end: Coordinates): number =>
   Math.sqrt(Math.pow(start.x - end.x, 2) + Math.pow(start.y - end.y, 2))
 
+const loopUp = (
+  start: number,
+  end: number,
+  callback: (i: number) => boolean,
+): boolean => {
+  let isBlocking: boolean = false
+  for (let i = start; i <= end; ++i) {
+    isBlocking = callback(i)
+    if (isBlocking) return isBlocking
+  }
+
+  return isBlocking
+}
+
+const loopDown = (
+  start: number,
+  end: number,
+  callback: (i: number) => boolean,
+): boolean => {
+  let isBlocking: boolean = false
+
+  for (let i = start; i >= end; --i) {
+    isBlocking = callback(i)
+    if (isBlocking) return isBlocking
+  }
+
+  return isBlocking
+}
+
 const isPathClearToMoveTo = (
   start: Coordinates,
   end: Coordinates,
@@ -24,20 +53,19 @@ const isPathClearToMoveTo = (
 ): boolean => {
   const opposite = start.y - end.y,
     hypotenuse = findVector(start, end),
-    Θ = Math.sin(opposite / hypotenuse)
+    Θ = Math.sin(opposite / hypotenuse),
+    QuatPi = Math.PI / 4,
+    ΘMax = Θ + QuatPi,
+    ΘMin = Θ - QuatPi,
+    xLoop = start.x < end.x ? loopUp : loopDown,
+    yLoop = start.y < end.y ? loopUp : loopDown
 
-  for (let i = start.x; i <= end.x; ++i) {
-    for (let j = start.y; j <= end.y; ++j) {
-      if (
-        Θ === Math.sin((start.y - j) / findVector(start, { x: i, y: j })) &&
-        map[j][i] === "X"
-      ) {
-        return false
-      }
-    }
-  }
-
-  return true
+  return !xLoop(start.x, end.x, x =>
+    yLoop(start.y, end.y, y => {
+      const tileΘ = Math.sin((start.y - y) / findVector(start, { x, y }))
+      return ΘMax > tileΘ && ΘMin < tileΘ && map[y][x] === "X"
+    }),
+  )
 }
 
 export const moveReducers: MoveReducerTypes = {

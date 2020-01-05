@@ -51,19 +51,17 @@ const isPathClearToMoveTo = (
   end: Coordinates,
   map: GameMap,
 ): boolean => {
-  const opposite = start.y - end.y,
-    hypotenuse = findVector(start, end),
-    Θ = Math.sin(opposite / hypotenuse),
+  const Θ = Math.sin((start.y - end.y) / findVector(start, end)),
     QuatPi = Math.PI / 4,
-    ΘMax = Θ + QuatPi,
-    ΘMin = Θ - QuatPi,
+    maxΘ = Θ + QuatPi,
+    minΘ = Θ - QuatPi,
     xLoop = start.x < end.x ? loopUp : loopDown,
     yLoop = start.y < end.y ? loopUp : loopDown
 
   return !xLoop(start.x, end.x, x =>
     yLoop(start.y, end.y, y => {
       const tileΘ = Math.sin((start.y - y) / findVector(start, { x, y }))
-      return ΘMax > tileΘ && ΘMin < tileΘ && map[y][x] === "X"
+      return maxΘ > tileΘ && minΘ < tileΘ && map[y][x] === "X"
     }),
   )
 }

@@ -17,34 +17,32 @@ const isTileOnBoard = ({ map }: State, { x, y }: Coordinates): boolean =>
 const findVector = (start: Coordinates, end: Coordinates): number =>
   Math.sqrt(Math.pow(start.x - end.x, 2) + Math.pow(start.y - end.y, 2))
 
-const loopUp = (
-  start: number,
-  end: number,
-  callback: (i: number) => boolean,
-): boolean => {
-  let isBlocking: boolean = false
-  for (let i = start; i <= end; ++i) {
-    isBlocking = callback(i)
-    if (isBlocking) return isBlocking
+type incrementExpression = (i: number) => number
+type loopCondition = (i: number, end: number) => boolean
+
+const incrementLoop: incrementExpression = i => ++i,
+  decrmentLoop: incrementExpression = i => --i,
+  isLoopAtMax: loopCondition = (i, end) => i <= end,
+  isLoopAtMin: loopCondition = (i, end) => i >= end,
+  generateLoop = (isLoopingUp: boolean) => {
+    const loopDirection = isLoopingUp ? incrementLoop : decrmentLoop,
+      isLoopDone = isLoopingUp ? isLoopAtMax : isLoopAtMin
+
+    return (
+      start: number,
+      end: number,
+      callback: (i: number) => boolean,
+    ): boolean => {
+      let isBlocking: boolean = false
+
+      for (let i = start; isLoopDone(i, end); i = loopDirection(i)) {
+        isBlocking = callback(i)
+        if (isBlocking) return isBlocking
+      }
+
+      return isBlocking
+    }
   }
-
-  return isBlocking
-}
-
-const loopDown = (
-  start: number,
-  end: number,
-  callback: (i: number) => boolean,
-): boolean => {
-  let isBlocking: boolean = false
-
-  for (let i = start; i >= end; --i) {
-    isBlocking = callback(i)
-    if (isBlocking) return isBlocking
-  }
-
-  return isBlocking
-}
 
 const isPathClearToMoveTo = (
   start: Coordinates,
@@ -55,8 +53,8 @@ const isPathClearToMoveTo = (
     QuatPi = Math.PI / 4,
     maxΘ = Θ + QuatPi,
     minΘ = Θ - QuatPi,
-    xLoop = start.x < end.x ? loopUp : loopDown,
-    yLoop = start.y < end.y ? loopUp : loopDown
+    xLoop = generateLoop(start.x < end.x),
+    yLoop = generateLoop(start.y < end.y)
 
   return !xLoop(start.x, end.x, x =>
     yLoop(start.y, end.y, y => {

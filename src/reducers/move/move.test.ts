@@ -42,6 +42,27 @@ describe("move action", () => {
     expect(actual.player.y).toEqual(0)
   })
 
+  describe("path finding", () => {
+    it("should be able to find a path around obsticales", () => {
+      const actual = gameReducer(initState({ x: 1, y: 4 }), {
+        type: ACTIONS.MOVE,
+        payload: { x: 2, y: 3 },
+      })
+
+      expect(actual.player.x).toEqual(2)
+      expect(actual.player.y).toEqual(3)
+    })
+    it("should be not able to find a path around obsticales further then the player's range", () => {
+      const actual = gameReducer(initState({ x: 1, y: 4 }), {
+        type: ACTIONS.MOVE,
+        payload: { x: 3, y: 3 },
+      })
+
+      expect(actual.player.x).toEqual(1)
+      expect(actual.player.y).toEqual(4)
+    })
+  })
+
   describe("collision detection", () => {
     it("should not allow the player to move through obstacles", () => {
       const actual = gameReducer(initState({ x: 1, y: 4 }), {

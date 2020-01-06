@@ -1,5 +1,5 @@
 import { State, ReducerFunction } from "../game.reducer"
-import { ACTIONS, Coordinates, GameMap } from "../types"
+import { ACTIONS, Coordinates, GameMap, PlayerState } from "../types"
 
 export type MoveReducerTypes = {
   [ACTIONS.MOVE]: ReducerFunction
@@ -44,6 +44,8 @@ const incrementLoop: incrementExpression = i => ++i,
     }
   }
 
+const isTileBlocked = ({ x, y }: Coordinates, map: GameMap) => map[y][x] === "X"
+
 const isPathClearToMoveTo = (
   start: Coordinates,
   end: Coordinates,
@@ -58,9 +60,37 @@ const isPathClearToMoveTo = (
 
   return !xLoop(start.x, end.x, x =>
     yLoop(start.y, end.y, y => {
-      const tileΘ = Math.sin((start.y - y) / findVector(start, { x, y }))
-      return maxΘ > tileΘ && minΘ < tileΘ && map[y][x] === "X"
+      const tile = { x, y },
+        tileΘ = Math.sin((start.y - y) / findVector(start, tile))
+      return maxΘ > tileΘ && minΘ < tileΘ && isTileBlocked(tile, map)
     }),
+  )
+}
+
+const foundAPath = (
+  start: PlayerState,
+  end: Coordinates,
+  map: GameMap,
+): boolean => {
+  const isBelow = start.y < end.y,
+    isRight = start.x < end.x,
+    speed = start.speed - 1,
+    adjacentTileX = { x: start.x + (isRight ? 1 : -1), y: start.y, speed },
+    adjacentTileY = { x: start.x, y: start.y + (isBelow ? 1 : -1), speed }
+
+  const tileToCheck: PlayerState[] = [
+    ...(start.x === end.x || isTileBlocked(adjacentTileX, map)
+      ? []
+      : [adjacentTileX]),
+    ...(start.y === end.y || isTileBlocked(adjacentTileY, map)
+      ? []
+      : [adjacentTileY]),
+  ]
+
+  return tileToCheck.some(
+    tile =>
+      (findVector(tile, end) < speed && isPathClearToMoveTo(tile, end, map)) ||
+      foundAPath(tile, end, map),
   )
 }
 
@@ -69,7 +99,8 @@ export const moveReducers: MoveReducerTypes = {
     if (
       isTileOnBoard(state, nextStep) &&
       findVector(state.player, nextStep) < state.player.speed &&
-      isPathClearToMoveTo(state.player, nextStep, state.map)
+      (isPathClearToMoveTo(state.player, nextStep, state.map) ||
+        foundAPath(state.player, nextStep, state.map))
     ) {
       return {
         ...state,

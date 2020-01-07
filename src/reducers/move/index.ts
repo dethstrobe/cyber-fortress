@@ -72,19 +72,34 @@ const foundAPath = (
   end: Coordinates,
   map: GameMap,
 ): boolean => {
+  // TODO: refactor this nightmare!
   const isBelow = start.y < end.y,
     isRight = start.x < end.x,
     speed = start.speed - 1,
-    adjacentTileX = { x: start.x + (isRight ? 1 : -1), y: start.y, speed },
-    adjacentTileY = { x: start.x, y: start.y + (isBelow ? 1 : -1), speed }
+    adjacentX = start.x + (isRight ? 1 : -1),
+    adjacentY = start.y + (isBelow ? 1 : -1),
+    adjacentTileX = { x: adjacentX, y: start.y, speed },
+    adjacentTileY = { x: start.x, y: adjacentY, speed },
+    adjecentDiagonalTile = {
+      x: adjacentX,
+      y: adjacentY,
+      speed: start.speed - Math.sqrt(2),
+    },
+    isXTileBlocked = isTileBlocked(adjacentTileX, map),
+    isYTileBlock = isTileBlocked(adjacentTileY, map),
+    isThereAChangeInX = start.x === end.x,
+    isThereAChangeInY = start.y === end.y
 
   const tileToCheck: PlayerState[] = [
-    ...(start.x === end.x || isTileBlocked(adjacentTileX, map)
+    ...(isThereAChangeInX || isXTileBlocked ? [] : [adjacentTileX]),
+    ...(isThereAChangeInY || isYTileBlock ? [] : [adjacentTileY]),
+    ...(isThereAChangeInY ||
+    isThereAChangeInX ||
+    isXTileBlocked ||
+    isYTileBlock ||
+    isTileBlocked(adjecentDiagonalTile, map)
       ? []
-      : [adjacentTileX]),
-    ...(start.y === end.y || isTileBlocked(adjacentTileY, map)
-      ? []
-      : [adjacentTileY]),
+      : [adjecentDiagonalTile]),
   ]
 
   return tileToCheck.some(

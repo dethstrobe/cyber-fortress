@@ -61,6 +61,15 @@ describe("move action", () => {
       expect(actual.player.x).toEqual(1)
       expect(actual.player.y).toEqual(4)
     })
+    it("should be able to find a path around obsticales that are in player's range diagonally", () => {
+      const actual = gameReducer(initState({ x: 0, y: 4 }), {
+        type: ACTIONS.MOVE,
+        payload: { x: 2, y: 3 },
+      })
+
+      expect(actual.player.x).toEqual(2)
+      expect(actual.player.y).toEqual(3)
+    })
   })
 
   describe("collision detection", () => {

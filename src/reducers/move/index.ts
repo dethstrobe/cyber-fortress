@@ -78,6 +78,8 @@ const foundAPath = (
     speed = start.speed - 1,
     adjacentX = start.x + (isRight ? 1 : -1),
     adjacentY = start.y + (isBelow ? 1 : -1),
+    isAdjeacentXOffTheMap = adjacentX < 0 || adjacentX > map[0].length,
+    isAdjeacentYOffTheMap = adjacentY < 0 || adjacentY > map.length,
     adjacentTileX = { x: adjacentX, y: start.y, speed },
     adjacentTileY = { x: start.x, y: adjacentY, speed },
     adjecentDiagonalTile = {
@@ -85,18 +87,24 @@ const foundAPath = (
       y: adjacentY,
       speed: start.speed - Math.sqrt(2),
     },
-    isXTileBlocked = isTileBlocked(adjacentTileX, map),
-    isYTileBlock = isTileBlocked(adjacentTileY, map),
+    isXTileBlocked = isAdjeacentXOffTheMap || isTileBlocked(adjacentTileX, map),
+    isYTileBlock = isAdjeacentYOffTheMap || isTileBlocked(adjacentTileY, map),
     isThereAChangeInX = start.x === end.x,
     isThereAChangeInY = start.y === end.y
 
   const tileToCheck: PlayerState[] = [
-    ...(isThereAChangeInX || isXTileBlocked ? [] : [adjacentTileX]),
-    ...(isThereAChangeInY || isYTileBlock ? [] : [adjacentTileY]),
+    ...(isThereAChangeInX || isXTileBlocked || isAdjeacentXOffTheMap
+      ? []
+      : [adjacentTileX]),
+    ...(isThereAChangeInY || isYTileBlock || isAdjeacentYOffTheMap
+      ? []
+      : [adjacentTileY]),
     ...(isThereAChangeInY ||
     isThereAChangeInX ||
     isXTileBlocked ||
     isYTileBlock ||
+    isAdjeacentXOffTheMap ||
+    isAdjeacentYOffTheMap ||
     isTileBlocked(adjecentDiagonalTile, map)
       ? []
       : [adjecentDiagonalTile]),

@@ -6,7 +6,7 @@ describe("move action", () => {
     const newState = new State()
     newState.player = { ...newState.player, ...location }
     newState.map = [
-      ["O", "O", "O", "X"],
+      ["O", "X", "O", "X"],
       ["O", "O", "O", "X"],
       ["O", "O", "X", "X"],
       ["O", "O", "O", "O"],
@@ -52,6 +52,7 @@ describe("move action", () => {
       expect(actual.player.x).toEqual(2)
       expect(actual.player.y).toEqual(3)
     })
+
     it("should be not able to find a path around obsticales further then the player's range", () => {
       const actual = gameReducer(initState({ x: 1, y: 4 }), {
         type: ACTIONS.MOVE,
@@ -61,6 +62,7 @@ describe("move action", () => {
       expect(actual.player.x).toEqual(1)
       expect(actual.player.y).toEqual(4)
     })
+
     it("should be able to find a path around obsticales that are in player's range diagonally", () => {
       const actual = gameReducer(initState({ x: 0, y: 4 }), {
         type: ACTIONS.MOVE,
@@ -69,6 +71,16 @@ describe("move action", () => {
 
       expect(actual.player.x).toEqual(2)
       expect(actual.player.y).toEqual(3)
+    })
+
+    it("should not attempt to path find outside of the map", () => {
+      const actual = gameReducer(initState({ x: 2, y: 0 }), {
+        type: ACTIONS.MOVE,
+        payload: { x: 0, y: 0 },
+      })
+
+      expect(actual.player.x).toEqual(2)
+      expect(actual.player.y).toEqual(0)
     })
   })
 

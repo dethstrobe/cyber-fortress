@@ -28,6 +28,7 @@ function drawBoard(
   ctx: CanvasRenderingContext2D,
   map: TileOption[][],
   enemyLocations: EnemyLocation,
+  enemies: EnemyState[],
   scale: number,
   offsetX: number,
   offsetY: number,
@@ -37,7 +38,7 @@ function drawBoard(
       const enemyTile = enemyLocations[y][x]
 
       if (typeof enemyTile === "number") {
-        ctx.fillStyle = "blue"
+        ctx.fillStyle = `rgba(0, 0, 255, 0.${enemies[enemyTile].hp})`
         ctx.strokeStyle = "white"
       } else {
         const { stroke, fill } = tileRenderOptions[tile]
@@ -71,7 +72,7 @@ export const renderBoard = (
   ctx.clearRect(0, 0, width, height)
   ctx.beginPath()
 
-  drawBoard(ctx, map, enemyLocations, scale, offsetX, offsetY)
+  drawBoard(ctx, map, enemyLocations, enemies, scale, offsetX, offsetY)
 
   // player
   drawPlayer(ctx, center, scale)

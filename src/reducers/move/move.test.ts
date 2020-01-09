@@ -14,7 +14,7 @@ describe("move action", () => {
     ]
     newState.enemyLocations = [
       [_, _, _, _],
-      [_, 0, _, _],
+      [_, _, _, _],
       [_, _, _, _],
       [_, _, _, _],
       [_, _, _, _],

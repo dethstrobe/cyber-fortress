@@ -4,11 +4,12 @@ import {
   TileOption,
   EnemyState,
   EnemyLocation,
+  PlayerState,
 } from "../reducers/types"
 
 interface BoardOptions {
   scale: number
-  offset: Coordinates
+  player: PlayerState
   center: Coordinates
   map: GameMap
   enemies: EnemyState[]
@@ -51,6 +52,8 @@ function drawBoard(
   })
 }
 
+function drawPlayerMovementRange(map: GameMap, player: PlayerState) {}
+
 function drawPlayer(
   ctx: CanvasRenderingContext2D,
   center: Coordinates,
@@ -63,17 +66,19 @@ function drawPlayer(
 
 export const renderBoard = (
   ctx: CanvasRenderingContext2D,
-  { scale, center, offset, map, enemies, enemyLocations }: BoardOptions,
+  { scale, center, player, map, enemies, enemyLocations }: BoardOptions,
 ) => {
   const { width, height } = ctx.canvas,
-    offsetX = center.x - offset.x,
-    offsetY = center.y - offset.y
+    offsetX = center.x - scale * player.x,
+    offsetY = center.y - scale * player.y
 
   ctx.clearRect(0, 0, width, height)
   ctx.beginPath()
 
   drawBoard(ctx, map, enemyLocations, enemies, scale, offsetX, offsetY)
 
+  // player movement range
+  // drawPlayerMovementRange()
   // player
   drawPlayer(ctx, center, scale)
 }

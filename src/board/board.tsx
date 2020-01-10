@@ -62,7 +62,7 @@ const Board: React.FC<Props> = ({
       renderBoard(ctx, {
         scale,
         center,
-        offset: { x: scale * player.x, y: scale * player.y },
+        player,
         map,
         enemies,
         enemyLocations,
@@ -78,15 +78,15 @@ const Board: React.FC<Props> = ({
       onClick={e => {
         if (!canvasRef.current) return
         const center = findCenter(canvasRef.current)
-        const loc = {
+        const clickLoc = {
           x: Math.floor((e.clientX - center.x) / scale),
           y: Math.floor((e.clientY - center.y) / scale),
         }
 
         if (selectedPlayerAction === "move") {
-          move({ x: player.x + loc.x, y: player.y + loc.y })
+          move({ x: player.x + clickLoc.x, y: player.y + clickLoc.y })
         } else if (selectedPlayerAction === "attack") {
-          attack({ x: player.x + loc.x, y: player.y + loc.y })
+          attack({ x: player.x + clickLoc.x, y: player.y + clickLoc.y })
         }
       }}
     />

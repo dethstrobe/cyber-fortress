@@ -14,7 +14,7 @@ export const moveActions = {
 const isTileOnBoard = ({ map }: State, { x, y }: Coordinates): boolean =>
   y >= 0 && x >= 0 && y < map.length && x < map[0].length
 
-const findVector = (start: Coordinates, end: Coordinates): number =>
+export const findVector = (start: Coordinates, end: Coordinates): number =>
   Math.sqrt(Math.pow(start.x - end.x, 2) + Math.pow(start.y - end.y, 2))
 
 type incrementExpression = (i: number) => number

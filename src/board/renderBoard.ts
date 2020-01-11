@@ -6,7 +6,7 @@ import {
   EnemyLocation,
   PlayerState,
 } from "../reducers/types"
-import { foundAPath } from "../reducers/move"
+import { foundAPath, findVector } from "../reducers/move"
 
 interface BoardOptions {
   scale: number
@@ -78,9 +78,13 @@ function drawPlayerMovementRange(
       X <= XStop;
       ++X
     ) {
-      if (foundAPath(player, { x: X, y: Y }, map)) {
-        ctx.fillStyle = `rgba(0, 255, 255, 0.5)`
-        ctx.fillRect(X * scale + offsetX, Y * scale + offsetY, scale, scale)
+      const tileToCheck = { x: X, y: Y }
+      if (
+        findVector(player, tileToCheck) < player.speed &&
+        foundAPath(player, tileToCheck, map)
+      ) {
+        ctx.strokeStyle = "coral"
+        ctx.strokeRect(X * scale + offsetX, Y * scale + offsetY, scale, scale)
       }
     }
   }

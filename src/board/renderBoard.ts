@@ -6,6 +6,7 @@ import {
   EnemyLocation,
   PlayerState,
 } from "../reducers/types"
+import { foundAPath } from "../reducers/move"
 
 interface BoardOptions {
   scale: number
@@ -52,7 +53,38 @@ function drawBoard(
   })
 }
 
-function drawPlayerMovementRange(map: GameMap, player: PlayerState) {}
+function drawPlayerMovementRange(
+  ctx: CanvasRenderingContext2D,
+  scale: number,
+  offsetX: number,
+  offsetY: number,
+  map: GameMap,
+  player: PlayerState,
+) {
+  const startX = Math.floor(player.x - player.speed),
+    endX = Math.floor(player.x + player.speed),
+    startY = Math.floor(player.y - player.speed),
+    endY = Math.floor(player.y + player.speed)
+
+  for (
+    let Y = startY < 0 ? 0 : startY,
+      YStop = endY >= map.length ? map.length - 1 : endY;
+    Y <= YStop;
+    ++Y
+  ) {
+    for (
+      let X = startX < 0 ? 0 : startX,
+        XStop = endX >= map.length ? map.length - 1 : endX;
+      X <= XStop;
+      ++X
+    ) {
+      if (foundAPath(player, { x: X, y: Y }, map)) {
+        ctx.fillStyle = `rgba(0, 255, 255, 0.5)`
+        ctx.fillRect(X * scale + offsetX, Y * scale + offsetY, scale, scale)
+      }
+    }
+  }
+}
 
 function drawPlayer(
   ctx: CanvasRenderingContext2D,
@@ -78,7 +110,7 @@ export const renderBoard = (
   drawBoard(ctx, map, enemyLocations, enemies, scale, offsetX, offsetY)
 
   // player movement range
-  // drawPlayerMovementRange()
+  drawPlayerMovementRange(ctx, scale, offsetX, offsetY, map, player)
   // player
   drawPlayer(ctx, center, scale)
 }

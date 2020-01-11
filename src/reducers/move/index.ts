@@ -67,7 +67,7 @@ const isPathClearToMoveTo = (
   )
 }
 
-const foundAPath = (
+export const foundAPath = (
   start: PlayerState,
   end: Coordinates,
   map: GameMap,

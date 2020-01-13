@@ -7,6 +7,7 @@ import {
   PlayerState,
 } from "./types"
 import { AttackReducerType, attackReducers } from "./attack"
+import { enemyReducer } from "./Enemies"
 
 export const _ = undefined
 
@@ -34,13 +35,16 @@ export class State {
     [_, _, 0, _, _, _, _, _, _, _],
     [_, _, _, _, _, _, _, _, _, _],
     [_, _, _, _, _, _, _, _, _, _],
-    [_, _, _, _, _, _, _, _, _, _],
+    [_, _, _, _, _, 1, _, _, _, _],
     [_, _, _, _, _, _, _, _, _, _],
     [_, _, _, _, _, _, _, _, _, _],
     [_, _, _, _, _, _, _, _, _, _],
     [_, _, _, _, _, _, _, _, _, _],
   ]
-  enemies: EnemyState[] = [{ hp: 3 }]
+  enemies: EnemyState[] = [
+    new EnemyState(),
+    new EnemyState({ hp: 5, moving: "up" }),
+  ]
 }
 
 export type ReducerFunction = (state: State, payload?: any) => State
@@ -55,4 +59,4 @@ const reducers: ReducerTypes = {
 }
 
 export default (state: State = new State(), { type, payload }: ActionObject) =>
-  (reducers[type] || noAction)(state, payload)
+  enemyReducer((reducers[type] || noAction)(state, payload))

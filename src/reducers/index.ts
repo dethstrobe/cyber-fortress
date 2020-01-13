@@ -1,3 +1,3 @@
-import location from "./game.reducer"
+import gameReducer from "./game.reducer"
 
-export default location
+export default gameReducer

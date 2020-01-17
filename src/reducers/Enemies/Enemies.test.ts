@@ -1,54 +1,43 @@
 import { enemyReducer } from "."
 import { State, _ } from "../game.reducer"
-import { GameMap, EnemyLocation } from "../types"
+import { GameMap, EnemyLocation, EnemyState } from "../types"
 
 describe("enemy reducer", () => {
-  const setup = (map?: GameMap, enemyLocations?: EnemyLocation): State => {
+  const setup = (
+    map?: GameMap,
+    enemyLocations?: EnemyLocation,
+    enemies?: EnemyState[],
+  ): State => {
     const state = new State()
     if (map) state.map = map
     if (enemyLocations) state.enemyLocations = enemyLocations
+    if (enemies) state.enemies = enemies
 
     return state
   }
   describe("enemy movement", () => {
-    it("enemies should move the direction that want to", () => {
-      const newState = enemyReducer(setup())
-
-      expect(newState.enemyLocations).toEqual([
-        [_, _, _, _, _, _, _, _, _, _],
-        [_, _, _, _, _, _, _, _, _, _],
-        [_, _, _, _, _, _, _, _, _, _],
-        [_, _, 0, _, _, _, _, _, _, _],
-        [_, _, _, _, _, 1, _, _, _, _],
-        [_, _, _, _, _, _, _, _, _, _],
-        [_, _, _, _, _, _, _, _, _, _],
-        [_, _, _, _, _, _, _, _, _, _],
-        [_, _, _, _, _, _, _, _, _, _],
-        [_, _, _, _, _, _, _, _, _, _],
-      ])
-    })
-
-    it("should head the opposite direction once it hits the edge of the map", () => {
+    it("enemies move toward their waypoint", () => {
       const newState = enemyReducer(
         setup(
           [
-            ["O", "O", "O", "X"],
-            ["O", "O", "O", "X"],
-            ["O", "O", "O", "X"],
+            ["O", "O", "O", "O"],
+            ["O", "O", "O", "O"],
+            ["O", "O", "O", "O"],
             ["O", "O", "O", "O"],
           ],
           [
-            [_, 1, _, _],
+            [_, _, _, _],
             [_, _, _, _],
             [_, _, _, _],
             [_, _, 0, _],
           ],
+          [new EnemyState({ action: [{ x: 2, y: 0 }] })],
         ),
       )
 
       expect(newState.enemyLocations).toEqual([
         [_, _, _, _],
-        [_, 1, _, _],
+        [_, _, _, _],
         [_, _, 0, _],
         [_, _, _, _],
       ])

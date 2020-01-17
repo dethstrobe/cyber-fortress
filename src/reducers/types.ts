@@ -21,7 +21,8 @@ type enemyMovementDirection = "down" | "up"
 
 export class EnemyState {
   hp: number = 3
-  moving: enemyMovementDirection = "down"
+  speed: number = 1.3
+  actions: Coordinates[] = []
   // This constructor might be a bad idea, review later
   constructor(config = {}) {
     Object.assign(this, config)

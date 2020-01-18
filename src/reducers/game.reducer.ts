@@ -59,4 +59,4 @@ const reducers: ReducerTypes = {
 }
 
 export default (state: State = new State(), { type, payload }: ActionObject) =>
-  enemyReducer((reducers[type] || noAction)(state, payload))
+  enemyReducer((reducers[type] ?? noAction)(state, payload))

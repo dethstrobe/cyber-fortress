@@ -31,7 +31,7 @@ describe("enemy reducer", () => {
             [_, _, _, _],
             [_, _, 0, _],
           ],
-          [new EnemyState({ action: [{ x: 2, y: 0 }] })],
+          [new EnemyState({ actions: [{ x: 2, y: 0 }] })],
         ),
       )
 

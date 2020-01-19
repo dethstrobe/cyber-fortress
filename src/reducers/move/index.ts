@@ -44,7 +44,8 @@ const incrementLoop: incrementExpression = i => ++i,
     }
   }
 
-const isTileBlocked = ({ x, y }: Coordinates, map: GameMap) => map[y][x] === "X"
+export const isTileBlocked = ({ x, y }: Coordinates, map: GameMap) =>
+  map[y][x] === "X"
 
 const isPathClearToMoveTo = (
   start: Coordinates,

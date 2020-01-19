@@ -1,5 +1,6 @@
 import { ReducerFunction } from "../game.reducer"
 import { Coordinates, EnemyLocation } from "../types"
+import { isTileBlocked } from "../move"
 
 interface EnemyUpdater {
   index: number
@@ -28,6 +29,7 @@ export const enemyReducer: ReducerFunction = state => {
               y: Math.round(Math.sin(theta) * enemy.speed) + y,
             }
 
+          if (isTileBlocked(newLocation, state.map)) return tile
           enemyUpdateQue.push({ index: tile, newLocation, actionIndex })
           return undefined
         }

@@ -42,6 +42,7 @@ describe("enemy reducer", () => {
         [_, _, _, _],
       ])
     })
+
     it("enemies move toward their next waypoint once they reach current waypoint", () => {
       const newState = enemyReducer(
         setup(
@@ -75,6 +76,42 @@ describe("enemy reducer", () => {
         [_, _, _, _],
         [_, _, _, _],
         [_, 0, _, _],
+      ])
+    })
+
+    it("enemy stops if path is blocked", () => {
+      const newState = enemyReducer(
+        setup(
+          [
+            ["O", "O", "O", "O"],
+            ["O", "O", "O", "O"],
+            ["O", "O", "O", "O"],
+            ["O", "X", "O", "O"],
+          ],
+          [
+            [_, _, _, _],
+            [_, _, _, _],
+            [_, _, _, _],
+            [_, _, 0, _],
+          ],
+          [
+            new EnemyState({
+              actions: [
+                { x: 0, y: 3 },
+                { x: 2, y: 3 },
+              ],
+              actionIndex: 0,
+            }),
+          ],
+        ),
+      )
+
+      expect(newState.enemies[0].actionIndex).toBe(0)
+      expect(newState.enemyLocations).toEqual([
+        [_, _, _, _],
+        [_, _, _, _],
+        [_, _, _, _],
+        [_, _, 0, _],
       ])
     })
   })

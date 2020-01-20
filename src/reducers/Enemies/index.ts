@@ -21,7 +21,8 @@ export const enemyReducer: ReducerFunction = state => {
 
         if (waypoint) {
           if (waypoint.x === x && waypoint.y === y) {
-            waypoint = enemy.actions[++actionIndex]
+            actionIndex += actionIndex === enemy.actions.length - 1 ? -1 : 1
+            waypoint = enemy.actions[actionIndex]
           }
           const theta = Math.atan2(waypoint.y - y, waypoint.x - x),
             newLocation = {

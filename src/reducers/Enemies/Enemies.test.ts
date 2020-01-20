@@ -114,5 +114,42 @@ describe("enemy reducer", () => {
         [_, _, 0, _],
       ])
     })
+
+    it("enemy go back the way they came once out of actions", () => {
+      const newState = enemyReducer(
+        setup(
+          [
+            ["O", "O", "O", "O"],
+            ["O", "O", "O", "O"],
+            ["O", "O", "O", "O"],
+            ["O", "O", "O", "O"],
+          ],
+          [
+            [_, _, _, _],
+            [_, _, _, _],
+            [_, _, _, _],
+            [_, _, 0, _],
+          ],
+          [
+            new EnemyState({
+              actions: [
+                { x: 0, y: 1 },
+                { x: 2, y: 3 },
+              ],
+              actionIndex: 1,
+              speed: 1.5,
+            }),
+          ],
+        ),
+      )
+
+      expect(newState.enemies[0].actionIndex).toBe(0)
+      expect(newState.enemyLocations).toEqual([
+        [_, _, _, _],
+        [_, _, _, _],
+        [_, 0, _, _],
+        [_, _, _, _],
+      ])
+    })
   })
 })

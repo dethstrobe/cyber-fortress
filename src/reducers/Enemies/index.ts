@@ -30,7 +30,15 @@ export const enemyReducer: ReducerFunction = state => {
               y: Math.round(Math.sin(theta) * enemy.speed) + y,
             }
 
-          if (isTileBlocked(newLocation, state.map)) return tile
+          if (
+            isTileBlocked(newLocation, state.map) ||
+            enemyUpdateQue.some(
+              ({ newLocation: { x: quedX, y: quedY } }) =>
+                quedX === newLocation.x && quedY === newLocation.y,
+            )
+          )
+            return tile
+
           enemyUpdateQue.push({ index: tile, newLocation, actionIndex })
           return undefined
         }

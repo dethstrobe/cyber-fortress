@@ -151,5 +151,47 @@ describe("enemy reducer", () => {
         [_, _, _, _],
       ])
     })
+
+    it("top row enemies take movement president", () => {
+      const newState = enemyReducer(
+        setup(
+          [
+            ["O", "O", "O", "O"],
+            ["O", "O", "O", "O"],
+            ["O", "O", "O", "O"],
+            ["O", "O", "O", "O"],
+          ],
+          [
+            [_, 1, _, _],
+            [0, _, _, _],
+            [_, _, _, _],
+            [_, _, _, _],
+          ],
+          [
+            new EnemyState({
+              actions: [
+                { x: 3, y: 1 },
+                { x: 0, y: 1 },
+              ],
+              actionIndex: 0,
+            }),
+            new EnemyState({
+              actions: [
+                { x: 1, y: 3 },
+                { x: 1, y: 0 },
+              ],
+              actionIndex: 0,
+            }),
+          ],
+        ),
+      )
+
+      expect(newState.enemyLocations).toEqual([
+        [_, _, _, _],
+        [0, 1, _, _],
+        [_, _, _, _],
+        [_, _, _, _],
+      ])
+    })
   })
 })

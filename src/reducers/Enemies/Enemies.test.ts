@@ -16,7 +16,7 @@ describe("enemy reducer", () => {
     return state
   }
   describe("enemy movement", () => {
-    it("enemies move toward their waypoint", () => {
+    it("should move toward their waypoint", () => {
       const newState = enemyReducer(
         setup(
           [
@@ -43,7 +43,7 @@ describe("enemy reducer", () => {
       ])
     })
 
-    it("enemies move toward their next waypoint once they reach current waypoint", () => {
+    it("should move toward their next waypoint once they reach current waypoint", () => {
       const newState = enemyReducer(
         setup(
           [
@@ -79,7 +79,7 @@ describe("enemy reducer", () => {
       ])
     })
 
-    it("enemy stops if path is blocked", () => {
+    it("should stops if path is blocked", () => {
       const newState = enemyReducer(
         setup(
           [
@@ -115,7 +115,7 @@ describe("enemy reducer", () => {
       ])
     })
 
-    it("enemy go back the way they came once out of actions", () => {
+    it("should go back the way they came once out of actions", () => {
       const newState = enemyReducer(
         setup(
           [
@@ -152,7 +152,7 @@ describe("enemy reducer", () => {
       ])
     })
 
-    it("top row enemies take movement president", () => {
+    it("should prioritize top row enemies", () => {
       const newState = enemyReducer(
         setup(
           [
@@ -189,6 +189,41 @@ describe("enemy reducer", () => {
       expect(newState.enemyLocations).toEqual([
         [_, _, _, _],
         [0, 1, _, _],
+        [_, _, _, _],
+        [_, _, _, _],
+      ])
+    })
+
+    it("should not move on to the player", () => {
+      const newState = enemyReducer(
+        setup(
+          [
+            ["O", "O", "O", "O"],
+            ["O", "O", "O", "O"],
+            ["O", "O", "O", "O"],
+            ["O", "O", "O", "O"],
+          ],
+          [
+            [_, _, _, _],
+            [0, _, _, _],
+            [_, _, _, _],
+            [_, _, _, _],
+          ],
+          [
+            new EnemyState({
+              actions: [
+                { x: 0, y: 0 },
+                { x: 0, y: 1 },
+              ],
+              actionIndex: 0,
+            }),
+          ],
+        ),
+      )
+
+      expect(newState.enemyLocations).toEqual([
+        [_, _, _, _],
+        [0, _, _, _],
         [_, _, _, _],
         [_, _, _, _],
       ])

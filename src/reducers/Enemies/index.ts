@@ -35,7 +35,9 @@ export const enemyReducer: ReducerFunction = state => {
             enemyUpdateQue.some(
               ({ newLocation: { x: quedX, y: quedY } }) =>
                 quedX === newLocation.x && quedY === newLocation.y,
-            )
+            ) ||
+            (newLocation.x === state.player.x &&
+              newLocation.y === state.player.y)
           )
             return tile
 

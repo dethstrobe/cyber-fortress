@@ -16,6 +16,7 @@ export class State {
     x: 0,
     y: 0,
     speed: 2.5,
+    steps: [],
   }
   map: GameMap = [
     ["O", "O", "O", "X", "O", "O", "O", "X", "O", "O"],

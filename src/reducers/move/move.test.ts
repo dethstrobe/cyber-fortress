@@ -31,6 +31,7 @@ describe("move action", () => {
 
     expect(actual.player.x).toEqual(0)
     expect(actual.player.y).toEqual(0)
+    expect(actual.player.steps).toEqual([{ x: 0, y: 0 }])
   })
 
   it("should not allow you to move beyond the player range", () => {

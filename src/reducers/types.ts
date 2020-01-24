@@ -15,6 +15,7 @@ export interface ActionObject {
 
 export interface PlayerState extends Coordinates {
   speed: number
+  steps: Coordinates[]
 }
 
 export class EnemyState {

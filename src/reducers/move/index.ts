@@ -126,11 +126,13 @@ export const moveReducers: MoveReducerTypes = {
       (isPathClearToMoveTo(state.player, nextStep, state.map) ||
         foundAPath(state.player, nextStep, state.map))
     ) {
+      const steps = [nextStep]
       return {
         ...state,
         player: {
           ...state.player,
           ...nextStep,
+          steps,
         },
       }
     }

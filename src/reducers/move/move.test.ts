@@ -31,7 +31,10 @@ describe("move action", () => {
 
     expect(actual.player.x).toEqual(0)
     expect(actual.player.y).toEqual(0)
-    expect(actual.player.steps).toEqual([{ x: 0, y: 0 }])
+    expect(actual.player.steps).toEqual([
+      { x: 1, y: 1 },
+      { x: 0, y: 0 },
+    ])
   })
 
   it("should not allow you to move beyond the player range", () => {
@@ -42,6 +45,7 @@ describe("move action", () => {
 
     expect(actual.player.x).toEqual(0)
     expect(actual.player.y).toEqual(0)
+    expect(actual.player.steps).toEqual([])
   })
 
   describe("path finding", () => {
@@ -53,6 +57,11 @@ describe("move action", () => {
 
       expect(actual.player.x).toEqual(2)
       expect(actual.player.y).toEqual(3)
+      expect(actual.player.steps).toEqual([
+        { x: 1, y: 4 },
+        { x: 1, y: 3 },
+        { x: 2, y: 3 },
+      ])
     })
 
     it("should be not able to find a path around obsticales further then the player's range", () => {

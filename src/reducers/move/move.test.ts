@@ -1,6 +1,6 @@
 import gameReducer, { State, _ } from "../game.reducer"
 import { ACTIONS, Coordinates } from "../types"
-import { foundAPath } from "."
+import { foundAPath, findTilesToCheck } from "."
 
 describe("move action", () => {
   const initState = (location: Coordinates = { x: 2, y: 3 }): State => {
@@ -174,5 +174,17 @@ describe("foundAPath", () => {
   const state = new State()
   it("should find a path to an adjacent tile", () => {
     expect(foundAPath(state.player, { x: 1, y: 0 }, state.map)).toBe(true)
+  })
+})
+
+describe("findTilesToCheck", () => {
+  it("should return any array of 5 tiles adjacent to the start and on the side towards the end", () => {
+    expect(findTilesToCheck({ x: 1, y: 1 }, { x: 3, y: 3 })).toEqual([
+      { x: 2, y: 0 },
+      { x: 2, y: 1 },
+      { x: 2, y: 2 },
+      { x: 1, y: 2 },
+      { x: 0, y: 2 },
+    ])
   })
 })

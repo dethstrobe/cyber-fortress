@@ -21,11 +21,11 @@ type incrementExpression = (i: number) => number
 type loopCondition = (i: number, end: number) => boolean
 
 const incrementLoop: incrementExpression = i => ++i,
-  decrmentLoop: incrementExpression = i => --i,
+  decrementLoop: incrementExpression = i => --i,
   isLoopAtMax: loopCondition = (i, end) => i <= end,
   isLoopAtMin: loopCondition = (i, end) => i >= end,
   generateLoop = (isLoopingUp: boolean) => {
-    const loopDirection = isLoopingUp ? incrementLoop : decrmentLoop,
+    const loopDirection = isLoopingUp ? incrementLoop : decrementLoop,
       isLoopDone = isLoopingUp ? isLoopAtMax : isLoopAtMin
 
     return (
@@ -44,6 +44,9 @@ const incrementLoop: incrementExpression = i => ++i,
     }
   }
 
+const findTheta = (start: Coordinates, end: Coordinates) =>
+  Math.sin((start.y - end.y) / findVector(start, end))
+
 export const isTileBlocked = ({ x, y }: Coordinates, map: GameMap) =>
   map[y][x] === "X"
 
@@ -52,7 +55,7 @@ const isPathClearToMoveTo = (
   end: Coordinates,
   map: GameMap,
 ): boolean => {
-  const Θ = Math.sin((start.y - end.y) / findVector(start, end)),
+  const Θ = findTheta(start, end),
     QuatPi = Math.PI / 4,
     maxΘ = Θ + QuatPi,
     minΘ = Θ - QuatPi,
@@ -118,6 +121,34 @@ export const foundAPath = (
   )
 }
 
+export const findTilesToCheck = (
+  start: Coordinates,
+  end: Coordinates,
+): Coordinates[] => {
+  let theta = findTheta(start, end)
+  const quatPi = Math.PI / 4,
+    maxDistance = 1.42,
+    pointsToCheck: Coordinates[] = []
+
+  for (let i = 0; i < 5; ++i) {
+    const tile = {
+      x: Math.round(Math.cos(theta) * maxDistance) + start.x,
+      y: Math.round(Math.sin(theta) * maxDistance) + start.y,
+    }
+    pointsToCheck.push(tile)
+    theta += quatPi
+  }
+  return pointsToCheck
+}
+
+const findSteps = (
+  start: Coordinates,
+  end: Coordinates,
+  map: GameMap,
+): Coordinates[] => {
+  return [start, end]
+}
+
 export const moveReducers: MoveReducerTypes = {
   [ACTIONS.MOVE](state, nextStep: Coordinates) {
     if (
@@ -126,7 +157,11 @@ export const moveReducers: MoveReducerTypes = {
       (isPathClearToMoveTo(state.player, nextStep, state.map) ||
         foundAPath(state.player, nextStep, state.map))
     ) {
-      const steps = [{ x: state.player.x, y: state.player.y }, nextStep]
+      const steps = findSteps(
+        { x: state.player.x, y: state.player.y },
+        nextStep,
+        state.map,
+      )
       return {
         ...state,
         player: {

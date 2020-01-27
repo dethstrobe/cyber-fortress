@@ -187,4 +187,14 @@ describe("findTilesToCheck", () => {
       { x: 0, y: 2 },
     ])
   })
+
+  it("should return an array of tiles to check going clockwise from the start", () => {
+    expect(findTilesToCheck({ x: 1, y: 4 }, { x: 2, y: 3 })).toEqual([
+      { x: 0, y: 3 },
+      { x: 1, y: 3 },
+      { x: 2, y: 3 },
+      { x: 2, y: 4 },
+      { x: 2, y: 5 },
+    ])
+  })
 })

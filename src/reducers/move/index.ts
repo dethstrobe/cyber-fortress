@@ -11,7 +11,7 @@ export const moveActions = {
   },
 }
 
-const isTileOnBoard = ({ map }: State, { x, y }: Coordinates): boolean =>
+const isTileOnBoard = (map: GameMap, { x, y }: Coordinates): boolean =>
   y >= 0 && x >= 0 && y < map.length && x < map[0].length
 
 export const findVector = (start: Coordinates, end: Coordinates): number =>
@@ -46,6 +46,10 @@ const incrementLoop: incrementExpression = i => ++i,
 
 const findTheta = (start: Coordinates, end: Coordinates) =>
   Math.sin((start.y - end.y) / findVector(start, end))
+
+// TODO: replace findTheta with this later
+const findTheta2 = (start: Coordinates, end: Coordinates) =>
+  Math.atan2(start.y - end.y, start.x - end.x)
 
 export const isTileBlocked = ({ x, y }: Coordinates, map: GameMap) =>
   map[y][x] === "X"
@@ -125,9 +129,9 @@ export const findTilesToCheck = (
   start: Coordinates,
   end: Coordinates,
 ): Coordinates[] => {
-  let theta = findTheta(start, end)
+  let theta = findTheta2(start, end) + Math.PI / 2
   const quatPi = Math.PI / 4,
-    maxDistance = 1.42,
+    maxDistance = 1, // totally just a guess
     pointsToCheck: Coordinates[] = []
 
   for (let i = 0; i < 5; ++i) {
@@ -142,26 +146,33 @@ export const findTilesToCheck = (
 }
 
 const findSteps = (
-  start: Coordinates,
+  start: PlayerState,
   end: Coordinates,
   map: GameMap,
 ): Coordinates[] => {
-  return [start, end]
+  const tiles = findTilesToCheck(start, end)
+
+  const filtered = tiles.filter(
+    tile =>
+      isTileOnBoard(map, tile) &&
+      !isTileBlocked(tile, map) &&
+      findVector(tile, end) < start.speed &&
+      isPathClearToMoveTo(tile, end, map),
+  )
+
+  // console.log(start, end, filtered, tiles)
+  return [{ x: start.x, y: start.y }, ...tiles, end]
 }
 
 export const moveReducers: MoveReducerTypes = {
   [ACTIONS.MOVE](state, nextStep: Coordinates) {
     if (
-      isTileOnBoard(state, nextStep) &&
+      isTileOnBoard(state.map, nextStep) &&
       findVector(state.player, nextStep) < state.player.speed &&
       (isPathClearToMoveTo(state.player, nextStep, state.map) ||
         foundAPath(state.player, nextStep, state.map))
     ) {
-      const steps = findSteps(
-        { x: state.player.x, y: state.player.y },
-        nextStep,
-        state.map,
-      )
+      const steps = findSteps(state.player, nextStep, state.map)
       return {
         ...state,
         player: {

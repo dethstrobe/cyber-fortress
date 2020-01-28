@@ -154,32 +154,46 @@ const findSteps = (
 
   const filtered = tiles.filter(
     tile =>
-      isTileOnBoard(map, tile) &&
-      !isTileBlocked(tile, map) &&
-      findVector(tile, end) < start.speed &&
-      isPathClearToMoveTo(tile, end, map),
+      isTileOnBoard(map, tile) && // Is the tile on the board
+      !isTileBlocked(tile, map) && // is the tile an open space
+      isPathClearToMoveTo(start, tile, map) && // can the tile be moved to
+      isPathClearToMoveTo(tile, end, map) && // can the tile move to the end location
+      findVector(tile, end) < start.speed - findVector(start, tile), // is there enough movement to get here
   )
 
-  // console.log(start, end, filtered, tiles)
-  return [{ x: start.x, y: start.y }, ...tiles, end]
+  return [{ x: start.x, y: start.y }, ...filtered, end]
 }
 
 export const moveReducers: MoveReducerTypes = {
   [ACTIONS.MOVE](state, nextStep: Coordinates) {
     if (
       isTileOnBoard(state.map, nextStep) &&
-      findVector(state.player, nextStep) < state.player.speed &&
-      (isPathClearToMoveTo(state.player, nextStep, state.map) ||
-        foundAPath(state.player, nextStep, state.map))
+      findVector(state.player, nextStep) < state.player.speed
     ) {
-      const steps = findSteps(state.player, nextStep, state.map)
-      return {
-        ...state,
-        player: {
-          ...state.player,
-          ...nextStep,
-          steps,
-        },
+      console.log(
+        state.player,
+        nextStep,
+        isPathClearToMoveTo(state.player, nextStep, state.map),
+      )
+      if (isPathClearToMoveTo(state.player, nextStep, state.map)) {
+        return {
+          ...state,
+          player: {
+            ...state.player,
+            ...nextStep,
+            steps: [{ x: state.player.x, y: state.player.y }, nextStep],
+          },
+        }
+      } else if (foundAPath(state.player, nextStep, state.map)) {
+        const steps = findSteps(state.player, nextStep, state.map)
+        return {
+          ...state,
+          player: {
+            ...state.player,
+            ...nextStep,
+            steps,
+          },
+        }
       }
     }
 

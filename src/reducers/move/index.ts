@@ -170,11 +170,6 @@ export const moveReducers: MoveReducerTypes = {
       isTileOnBoard(state.map, nextStep) &&
       findVector(state.player, nextStep) < state.player.speed
     ) {
-      console.log(
-        state.player,
-        nextStep,
-        isPathClearToMoveTo(state.player, nextStep, state.map),
-      )
       if (isPathClearToMoveTo(state.player, nextStep, state.map)) {
         return {
           ...state,

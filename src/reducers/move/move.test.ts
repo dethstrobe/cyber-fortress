@@ -24,16 +24,16 @@ describe("move action", () => {
   }
 
   it("should move to a tile within the player's range", () => {
-    const actual = gameReducer(initState({ x: 1, y: 1 }), {
+    const actual = gameReducer(initState({ x: 1, y: 2 }), {
       type: ACTIONS.MOVE,
-      payload: { x: 0, y: 0 },
+      payload: { x: 0, y: 1 },
     })
 
     expect(actual.player.x).toEqual(0)
-    expect(actual.player.y).toEqual(0)
+    expect(actual.player.y).toEqual(1)
     expect(actual.player.steps).toEqual([
-      { x: 1, y: 1 },
-      { x: 0, y: 0 },
+      { x: 1, y: 2 },
+      { x: 0, y: 1 },
     ])
   })
 

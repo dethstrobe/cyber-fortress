@@ -64,7 +64,7 @@ describe("move action", () => {
       ])
     })
 
-    it("should be not able to find a path around obsticales further then the player's range", () => {
+    it("should be not able to find a path around obstacles further then the player's range", () => {
       const actual = gameReducer(initState({ x: 1, y: 4 }), {
         type: ACTIONS.MOVE,
         payload: { x: 3, y: 3 },
@@ -72,9 +72,10 @@ describe("move action", () => {
 
       expect(actual.player.x).toEqual(1)
       expect(actual.player.y).toEqual(4)
+      expect(actual.player.steps).toEqual([])
     })
 
-    it("should be able to find a path around obsticales that are in player's range diagonally", () => {
+    it("should be able to find a path around obstacles that are in player's range diagonally", () => {
       const actual = gameReducer(initState({ x: 0, y: 4 }), {
         type: ACTIONS.MOVE,
         payload: { x: 2, y: 3 },
@@ -82,6 +83,11 @@ describe("move action", () => {
 
       expect(actual.player.x).toEqual(2)
       expect(actual.player.y).toEqual(3)
+      expect(actual.player.steps).toEqual([
+        { x: 0, y: 4 },
+        { x: 1, y: 3 },
+        { x: 2, y: 3 },
+      ])
     })
 
     it("should not attempt to path find outside of the map", () => {

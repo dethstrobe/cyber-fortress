@@ -131,7 +131,7 @@ export const findTilesToCheck = (
 ): Coordinates[] => {
   let theta = findTheta2(start, end) + Math.PI / 2
   const quatPi = Math.PI / 4,
-    maxDistance = 1, // totally just a guess
+    maxDistance = 1.4, // totally just a guess
     pointsToCheck: Coordinates[] = []
 
   for (let i = 0; i < 5; ++i) {

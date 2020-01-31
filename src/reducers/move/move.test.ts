@@ -98,6 +98,7 @@ describe("move action", () => {
 
       expect(actual.player.x).toEqual(2)
       expect(actual.player.y).toEqual(0)
+      expect(actual.player.steps).toEqual([])
     })
   })
 
@@ -110,6 +111,7 @@ describe("move action", () => {
 
       expect(actual.player.x).toEqual(1)
       expect(actual.player.y).toEqual(4)
+      expect(actual.player.steps).toEqual([])
     })
 
     it("should not allow the player to move through obstacles going from right to left", () => {
@@ -120,6 +122,7 @@ describe("move action", () => {
 
       expect(actual.player.x).toEqual(3)
       expect(actual.player.y).toEqual(4)
+      expect(actual.player.steps).toEqual([])
     })
 
     it("should not allow move throw walls diagonally", () => {
@@ -130,6 +133,7 @@ describe("move action", () => {
 
       expect(actual.player.x).toEqual(3)
       expect(actual.player.y).toEqual(3)
+      expect(actual.player.steps).toEqual([])
     })
   })
 
@@ -142,6 +146,7 @@ describe("move action", () => {
 
       expect(actual.player.x).toEqual(2)
       expect(actual.player.y).toEqual(0)
+      expect(actual.player.steps).toEqual([])
     })
 
     it("left off the map", () => {
@@ -152,6 +157,7 @@ describe("move action", () => {
 
       expect(actual.player.x).toEqual(0)
       expect(actual.player.y).toEqual(0)
+      expect(actual.player.steps).toEqual([])
     })
 
     it("below the map", () => {
@@ -162,6 +168,7 @@ describe("move action", () => {
 
       expect(actual.player.x).toEqual(4)
       expect(actual.player.y).toEqual(4)
+      expect(actual.player.steps).toEqual([])
     })
 
     it("right off the map", () => {
@@ -172,6 +179,7 @@ describe("move action", () => {
 
       expect(actual.player.x).toEqual(4)
       expect(actual.player.y).toEqual(4)
+      expect(actual.player.steps).toEqual([])
     })
   })
 })

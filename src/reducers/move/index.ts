@@ -1,4 +1,4 @@
-import { State, ReducerFunction } from "../game.reducer"
+import { ReducerFunction } from "../game.reducer"
 import { ACTIONS, Coordinates, GameMap, PlayerState } from "../types"
 
 export type MoveReducerTypes = {
@@ -88,12 +88,13 @@ export const foundAPath = (
     adjacentY = start.y + (isBelow ? 1 : -1),
     isAdjeacentXOffTheMap = adjacentX < 0 || adjacentX > map[0].length,
     isAdjeacentYOffTheMap = adjacentY < 0 || adjacentY > map.length,
-    adjacentTileX = { x: adjacentX, y: start.y, speed },
-    adjacentTileY = { x: start.x, y: adjacentY, speed },
-    adjecentDiagonalTile = {
+    adjacentTileX: PlayerState = { x: adjacentX, y: start.y, speed, steps: [] },
+    adjacentTileY: PlayerState = { x: start.x, y: adjacentY, speed, steps: [] },
+    adjecentDiagonalTile: PlayerState = {
       x: adjacentX,
       y: adjacentY,
       speed: start.speed - Math.sqrt(2),
+      steps: [],
     },
     isXTileBlocked = isAdjeacentXOffTheMap || isTileBlocked(adjacentTileX, map),
     isYTileBlock = isAdjeacentYOffTheMap || isTileBlocked(adjacentTileY, map),

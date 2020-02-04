@@ -49,7 +49,7 @@ describe("move action", () => {
   })
 
   describe("path finding", () => {
-    it("should be able to find a path around obsticales", () => {
+    it("should be able to find a path around obstacles", () => {
       const actual = gameReducer(initState({ x: 1, y: 4 }), {
         type: ACTIONS.MOVE,
         payload: { x: 2, y: 3 },

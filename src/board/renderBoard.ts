@@ -26,31 +26,72 @@ const tileRenderOptions: TileOptions = {
   X: { stroke: "black", fill: "black" },
 }
 
-function drawBoard(
+function drawBoardCurry(
   ctx: CanvasRenderingContext2D,
   map: TileOption[][],
   enemyLocations: EnemyLocation,
   enemies: EnemyState[],
   scale: number,
-  offsetX: number,
-  offsetY: number,
-) {
-  map.forEach((row, y) => {
-    row.forEach((tile, x) => {
-      const enemyTile = enemyLocations[y][x]
+  player: PlayerState,
+  center: Coordinates,
+): (timestamp: number) => void {
+  let start: number,
+    currentStepIndex = 0
+  const drawBoard = (timestamp: number) => {
+    if (!start) start = timestamp
+    const progress = (timestamp - start) / 10,
+      currentStep = player.steps[currentStepIndex] ?? player,
+      nextStep = player.steps[currentStepIndex + 1] ?? player
 
-      if (typeof enemyTile === "number") {
-        ctx.fillStyle = `rgba(0, 0, 255, 0.${enemies[enemyTile].hp})`
-        ctx.strokeStyle = "white"
-      } else {
-        const { stroke, fill } = tileRenderOptions[tile]
-        ctx.fillStyle = fill
-        ctx.strokeStyle = stroke
-      }
+    const currentOffsetX = (center.x - scale * currentStep.x) / progress,
+      currentOffsetY = (center.y - scale * currentStep.y) / progress,
+      endOffsetX = center.x - scale * nextStep.x,
+      endOffsetY = center.y - scale * nextStep.y,
+      isXDirectionIncreasing = currentStep.x < nextStep.x,
+      isYDirectionIncreasing = currentStep.y < nextStep.y,
+      offsetX = Math[isXDirectionIncreasing ? "min" : "max"](
+        currentOffsetX,
+        endOffsetX,
+      ),
+      offsetY = Math[isYDirectionIncreasing ? "min" : "max"](
+        currentOffsetY,
+        endOffsetY,
+      )
 
-      ctx.fillRect(x * scale + offsetX, y * scale + offsetY, scale, scale)
+    map.forEach((row, y) => {
+      row.forEach((tile, x) => {
+        const enemyTile = enemyLocations[y][x]
+
+        if (typeof enemyTile === "number") {
+          ctx.fillStyle = `rgba(0, 0, 255, 0.${enemies[enemyTile].hp})`
+          ctx.strokeStyle = "white"
+        } else {
+          const { stroke, fill } = tileRenderOptions[tile]
+          ctx.fillStyle = fill
+          ctx.strokeStyle = stroke
+        }
+
+        ctx.fillRect(x * scale + offsetX, y * scale + offsetY, scale, scale)
+      })
     })
-  })
+
+    if (player.x !== nextStep.x && player.y !== nextStep.y) {
+      requestAnimationFrame(drawBoard)
+    }
+    if (
+      isXDirectionIncreasing
+        ? currentOffsetX > endOffsetX
+        : currentOffsetX < endOffsetX && isYDirectionIncreasing
+        ? currentOffsetY > endOffsetY
+        : currentOffsetY < endOffsetY
+    ) {
+      ++currentStepIndex
+    }
+    // player movement range
+    drawPlayerMovementRange(ctx, scale, offsetX, offsetY, map, player)
+  }
+
+  return drawBoard
 }
 
 function drawPlayerMovementRange(
@@ -104,17 +145,23 @@ export const renderBoard = (
   ctx: CanvasRenderingContext2D,
   { scale, center, player, map, enemies, enemyLocations }: BoardOptions,
 ) => {
-  const { width, height } = ctx.canvas,
-    offsetX = center.x - scale * player.x,
-    offsetY = center.y - scale * player.y
+  const { width, height } = ctx.canvas
 
   ctx.clearRect(0, 0, width, height)
   ctx.beginPath()
 
-  drawBoard(ctx, map, enemyLocations, enemies, scale, offsetX, offsetY)
+  const drawboard = drawBoardCurry(
+    ctx,
+    map,
+    enemyLocations,
+    enemies,
+    scale,
+    player,
+    center,
+  )
 
-  // player movement range
-  drawPlayerMovementRange(ctx, scale, offsetX, offsetY, map, player)
+  requestAnimationFrame(drawboard)
+
   // player
   drawPlayer(ctx, center, scale)
 }

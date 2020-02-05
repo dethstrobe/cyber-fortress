@@ -38,8 +38,13 @@ function drawBoardCurry(
   let start: number,
     currentStepIndex = 0
   const drawBoard = (timestamp: number) => {
+    const { width, height } = ctx.canvas
+
+    ctx.clearRect(0, 0, width, height)
+    ctx.beginPath()
+
     if (!start) start = timestamp
-    const progress = (timestamp - start) / 10,
+    const progress = (timestamp - start) / 100,
       currentStep = player.steps[currentStepIndex] ?? player,
       nextStep = player.steps[currentStepIndex + 1] ?? player
 
@@ -74,8 +79,10 @@ function drawBoardCurry(
         ctx.fillRect(x * scale + offsetX, y * scale + offsetY, scale, scale)
       })
     })
+    // player
+    drawPlayer(ctx, center, scale)
 
-    if (player.x !== nextStep.x && player.y !== nextStep.y) {
+    if (player.x !== currentStep.x || player.y !== currentStep.y) {
       requestAnimationFrame(drawBoard)
     }
     if (
@@ -145,11 +152,6 @@ export const renderBoard = (
   ctx: CanvasRenderingContext2D,
   { scale, center, player, map, enemies, enemyLocations }: BoardOptions,
 ) => {
-  const { width, height } = ctx.canvas
-
-  ctx.clearRect(0, 0, width, height)
-  ctx.beginPath()
-
   const drawboard = drawBoardCurry(
     ctx,
     map,
@@ -161,7 +163,4 @@ export const renderBoard = (
   )
 
   requestAnimationFrame(drawboard)
-
-  // player
-  drawPlayer(ctx, center, scale)
 }

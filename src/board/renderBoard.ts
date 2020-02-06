@@ -44,16 +44,18 @@ function drawBoardCurry(
     ctx.beginPath()
 
     if (!start) start = timestamp
-    const progress = (timestamp - start) / 100,
+    const progress = timestamp - start,
       currentStep = player.steps[currentStepIndex] ?? player,
       nextStep = player.steps[currentStepIndex + 1] ?? player
 
-    const currentOffsetX = (center.x - scale * currentStep.x) / progress,
-      currentOffsetY = (center.y - scale * currentStep.y) / progress,
+    const offsetStepX = (currentStep.x - nextStep.x) / progress,
+      offsetStepY = (currentStep.y - nextStep.y) / progress,
+      currentOffsetX = center.x - scale * (currentStep.x + offsetStepX),
+      currentOffsetY = center.y - scale * (currentStep.y + offsetStepY),
       endOffsetX = center.x - scale * nextStep.x,
       endOffsetY = center.y - scale * nextStep.y,
-      isXDirectionIncreasing = currentStep.x < nextStep.x,
-      isYDirectionIncreasing = currentStep.y < nextStep.y,
+      isXDirectionIncreasing = currentStep.x <= nextStep.x,
+      isYDirectionIncreasing = currentStep.y <= nextStep.y,
       offsetX = Math[isXDirectionIncreasing ? "min" : "max"](
         currentOffsetX,
         endOffsetX,
@@ -62,6 +64,8 @@ function drawBoardCurry(
         currentOffsetY,
         endOffsetY,
       )
+
+    console.log(offsetX, offsetY, progress)
 
     map.forEach((row, y) => {
       row.forEach((tile, x) => {

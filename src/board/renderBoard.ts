@@ -48,24 +48,26 @@ function drawBoardCurry(
       currentStep = player.steps[currentStepIndex] ?? player,
       nextStep = player.steps[currentStepIndex + 1] ?? player
 
-    const offsetStepX = (currentStep.x - nextStep.x) / progress,
-      offsetStepY = (currentStep.y - nextStep.y) / progress,
-      currentOffsetX = center.x - scale * (currentStep.x + offsetStepX),
-      currentOffsetY = center.y - scale * (currentStep.y + offsetStepY),
-      endOffsetX = center.x - scale * nextStep.x,
-      endOffsetY = center.y - scale * nextStep.y,
-      isXDirectionIncreasing = currentStep.x <= nextStep.x,
-      isYDirectionIncreasing = currentStep.y <= nextStep.y,
-      offsetX = Math[isXDirectionIncreasing ? "min" : "max"](
-        currentOffsetX,
-        endOffsetX,
-      ),
-      offsetY = Math[isYDirectionIncreasing ? "min" : "max"](
-        currentOffsetY,
-        endOffsetY,
-      )
+    const offsetStepX = ((currentStep.x - nextStep.x) * scale) / progress,
+      offsetStepY = ((currentStep.y - nextStep.y) * scale) / progress,
+      currentOffsetX = center.x - currentStep.x * scale + offsetStepX,
+      currentOffsetY = center.y - currentStep.y * scale + offsetStepY,
+      // endOffsetX = center.x - scale * nextStep.x,
+      // endOffsetY = center.y - scale * nextStep.y,
+      // isXDirectionIncreasing = currentStep.x <= nextStep.x,
+      // isYDirectionIncreasing = currentStep.y <= nextStep.y,
+      offsetX = center.x - nextStep.x * scale,
+      // Math[isXDirectionIncreasing ? "min" : "max"](
+      //   currentOffsetX,
+      //   endOffsetX,
+      // ),
+      offsetY = center.y - nextStep.y * scale
+    // Math[isYDirectionIncreasing ? "min" : "max"](
+    //   currentOffsetY,
+    //   endOffsetY,
+    // )
 
-    console.log(offsetX, offsetY, progress)
+    console.log(currentStepIndex)
 
     map.forEach((row, y) => {
       row.forEach((tile, x) => {
@@ -86,16 +88,10 @@ function drawBoardCurry(
     // player
     drawPlayer(ctx, center, scale)
 
-    if (player.x !== currentStep.x || player.y !== currentStep.y) {
+    if (progress < 100) {
       requestAnimationFrame(drawBoard)
     }
-    if (
-      isXDirectionIncreasing
-        ? currentOffsetX > endOffsetX
-        : currentOffsetX < endOffsetX && isYDirectionIncreasing
-        ? currentOffsetY > endOffsetY
-        : currentOffsetY < endOffsetY
-    ) {
+    if (progress > 100) {
       ++currentStepIndex
     }
     // player movement range

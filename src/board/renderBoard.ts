@@ -44,7 +44,7 @@ function drawBoardCurry(
     ctx.beginPath()
 
     if (!start) start = timestamp
-    const progress = (timestamp - start) / 2,
+    const progress = (timestamp - start) / (300 / player.steps.length),
       currentStep = player.steps[currentStepIndex] ?? player,
       nextStep = player.steps[currentStepIndex + 1] ?? player
 
@@ -52,10 +52,8 @@ function drawBoardCurry(
       currentOffsetY = center.y - currentStep.y * scale,
       nextOffsetX = center.x - nextStep.x * scale,
       nextOffsetY = center.y - nextStep.y * scale,
-      offsetX =
-        currentOffsetX - (currentOffsetX - nextOffsetX) * (progress / 100),
-      offsetY =
-        currentOffsetY - (currentOffsetY - nextOffsetY) * (progress / 100)
+      offsetX = currentOffsetX - (currentOffsetX - nextOffsetX) * progress,
+      offsetY = currentOffsetY - (currentOffsetY - nextOffsetY) * progress
 
     map.forEach((row, y) => {
       row.forEach((tile, x) => {
@@ -76,11 +74,12 @@ function drawBoardCurry(
     // player
     drawPlayer(ctx, center, scale)
 
-    if (progress < 100) {
+    if (progress < 1) {
       requestAnimationFrame(drawBoard)
-    }
-    if (progress > 100) {
+    } else if (currentStepIndex < player.steps.length - 1) {
       ++currentStepIndex
+      start = timestamp
+      requestAnimationFrame(drawBoard)
     }
     // player movement range
     drawPlayerMovementRange(ctx, scale, offsetX, offsetY, map, player)

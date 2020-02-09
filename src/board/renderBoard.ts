@@ -37,6 +37,7 @@ function drawBoardCurry(
 ): (timestamp: number) => void {
   let start: number,
     currentStepIndex = 0
+
   const drawBoard = (timestamp: number) => {
     const { width, height } = ctx.canvas
 
@@ -44,11 +45,10 @@ function drawBoardCurry(
     ctx.beginPath()
 
     if (!start) start = timestamp
-    const progress = (timestamp - start) / (300 / player.steps.length),
+    const progress = (timestamp - start) / (300 / (player.steps.length || 2)),
       currentStep = player.steps[currentStepIndex] ?? player,
-      nextStep = player.steps[currentStepIndex + 1] ?? player
-
-    const currentOffsetX = center.x - currentStep.x * scale,
+      nextStep = player.steps[currentStepIndex + 1] ?? player,
+      currentOffsetX = center.x - currentStep.x * scale,
       currentOffsetY = center.y - currentStep.y * scale,
       nextOffsetX = center.x - nextStep.x * scale,
       nextOffsetY = center.y - nextStep.y * scale,
@@ -71,8 +71,6 @@ function drawBoardCurry(
         ctx.fillRect(x * scale + offsetX, y * scale + offsetY, scale, scale)
       })
     })
-    // player
-    drawPlayer(ctx, center, scale)
 
     if (progress < 1) {
       requestAnimationFrame(drawBoard)
@@ -80,9 +78,12 @@ function drawBoardCurry(
       ++currentStepIndex
       start = timestamp
       requestAnimationFrame(drawBoard)
+    } else {
+      // player movement range
+      drawPlayerMovementRange(ctx, scale, offsetX, offsetY, map, player)
     }
-    // player movement range
-    drawPlayerMovementRange(ctx, scale, offsetX, offsetY, map, player)
+    // player
+    drawPlayer(ctx, center, scale)
   }
 
   return drawBoard
@@ -139,7 +140,7 @@ export const renderBoard = (
   ctx: CanvasRenderingContext2D,
   { scale, center, player, map, enemies, enemyLocations }: BoardOptions,
 ) => {
-  const drawboard = drawBoardCurry(
+  const drawBoard = drawBoardCurry(
     ctx,
     map,
     enemyLocations,
@@ -149,5 +150,5 @@ export const renderBoard = (
     center,
   )
 
-  requestAnimationFrame(drawboard)
+  requestAnimationFrame(drawBoard)
 }

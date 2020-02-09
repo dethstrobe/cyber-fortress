@@ -16,7 +16,7 @@ describe("<Board/>", () => {
     const props: Props = {
       move: jest.fn(),
       attack: jest.fn(),
-      player: { x: 3, y: 3, speed: 2.5 },
+      player: { x: 3, y: 3, speed: 2.5, steps: [] },
       map,
       enemies,
       enemyLocations,

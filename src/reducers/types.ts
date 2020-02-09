@@ -18,11 +18,14 @@ export interface PlayerState extends Coordinates {
   steps: Coordinates[]
 }
 
-export class EnemyState {
-  hp: number = 3
-  speed: number = 1.3
+export class EnemyState implements PlayerState {
+  x = 0
+  y = 0
+  hp = 3
+  speed = 1.3
   actions: Coordinates[] = []
   actionIndex?: number
+  steps: Coordinates[] = []
   // This constructor might be a bad idea, review later
   constructor(config = {}) {
     Object.assign(this, config)

@@ -1,6 +1,6 @@
 import { ReducerFunction } from "../game.reducer"
 import { Coordinates, EnemyLocation } from "../types"
-import { isTileBlocked } from "../move"
+import { isTileBlocked, findSteps } from "../move"
 
 interface EnemyUpdater {
   index: number
@@ -56,6 +56,8 @@ export const enemyReducer: ReducerFunction = state => {
     newEnemyLocations[newLocation.y][newLocation.x] = index
     enemies[index] = {
       ...state.enemies[index],
+      ...newLocation,
+      steps: findSteps(enemies[index], newLocation, state.map),
       actionIndex,
     }
   })

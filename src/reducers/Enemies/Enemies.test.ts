@@ -31,7 +31,14 @@ describe("enemy reducer", () => {
             [_, _, _, _],
             [_, _, 0, _],
           ],
-          [new EnemyState({ actions: [{ x: 2, y: 0 }], actionIndex: 0 })],
+          [
+            new EnemyState({
+              actions: [{ x: 2, y: 0 }],
+              actionIndex: 0,
+              x: 2,
+              y: 3,
+            }),
+          ],
         ),
       )
 
@@ -40,6 +47,14 @@ describe("enemy reducer", () => {
         [_, _, _, _],
         [_, _, 0, _],
         [_, _, _, _],
+      ])
+      const enemy = newState.enemies[0]
+      expect(enemy.x).toBe(2)
+      expect(enemy.y).toBe(2)
+      expect(enemy.steps).toHaveLength(2)
+      expect(enemy.steps).toEqual([
+        { x: 2, y: 3 },
+        { x: 2, y: 2 },
       ])
     })
 

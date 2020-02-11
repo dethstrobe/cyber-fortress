@@ -146,12 +146,13 @@ export const findTilesToCheck = (
   return pointsToCheck
 }
 
-const findSteps = (
+export const findSteps = (
   start: PlayerState,
   end: Coordinates,
   map: GameMap,
 ): Coordinates[] => {
-  const tiles = findTilesToCheck(start, end)
+  const tiles = findTilesToCheck(start, end),
+    jsonEndTile = JSON.stringify(end)
 
   const filtered = tiles.filter(
     tile =>
@@ -159,7 +160,8 @@ const findSteps = (
       !isTileBlocked(tile, map) && // is the tile an open space
       isPathClearToMoveTo(start, tile, map) && // can the tile be moved to
       isPathClearToMoveTo(tile, end, map) && // can the tile move to the end location
-      findVector(tile, end) < start.speed - findVector(start, tile), // is there enough movement to get here
+      findVector(tile, end) < start.speed - findVector(start, tile) && // is there enough movement to get here
+      JSON.stringify(tile) !== jsonEndTile, //might need to rethink this.
   )
 
   return [{ x: start.x, y: start.y }, ...filtered, end]

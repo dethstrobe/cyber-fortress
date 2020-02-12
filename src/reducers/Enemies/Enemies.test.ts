@@ -51,7 +51,6 @@ describe("enemy reducer", () => {
       const enemy = newState.enemies[0]
       expect(enemy.x).toBe(2)
       expect(enemy.y).toBe(2)
-      expect(enemy.steps).toHaveLength(2)
       expect(enemy.steps).toEqual([
         { x: 2, y: 3 },
         { x: 2, y: 2 },
@@ -80,6 +79,8 @@ describe("enemy reducer", () => {
                 { x: 0, y: 3 },
               ],
               actionIndex: 0,
+              x: 2,
+              y: 3,
             }),
           ],
         ),
@@ -91,6 +92,13 @@ describe("enemy reducer", () => {
         [_, _, _, _],
         [_, _, _, _],
         [_, 0, _, _],
+      ])
+      const enemy = newState.enemies[0]
+      expect(enemy.x).toBe(1)
+      expect(enemy.y).toBe(3)
+      expect(enemy.steps).toEqual([
+        { x: 2, y: 3 },
+        { x: 1, y: 3 },
       ])
     })
 
@@ -116,6 +124,8 @@ describe("enemy reducer", () => {
                 { x: 2, y: 3 },
               ],
               actionIndex: 0,
+              x: 2,
+              y: 3,
             }),
           ],
         ),
@@ -128,6 +138,10 @@ describe("enemy reducer", () => {
         [_, _, _, _],
         [_, _, 0, _],
       ])
+      const enemy = newState.enemies[0]
+      expect(enemy.x).toBe(2)
+      expect(enemy.y).toBe(3)
+      expect(enemy.steps).toEqual([])
     })
 
     it("should go back the way they came once out of actions", () => {
@@ -153,6 +167,8 @@ describe("enemy reducer", () => {
               ],
               actionIndex: 1,
               speed: 1.5,
+              x: 2,
+              y: 3,
             }),
           ],
         ),
@@ -164,6 +180,13 @@ describe("enemy reducer", () => {
         [_, _, _, _],
         [_, 0, _, _],
         [_, _, _, _],
+      ])
+      const enemy = newState.enemies[0]
+      expect(enemy.x).toBe(1)
+      expect(enemy.y).toBe(2)
+      expect(enemy.steps).toEqual([
+        { x: 2, y: 3 },
+        { x: 1, y: 2 },
       ])
     })
 
@@ -189,6 +212,8 @@ describe("enemy reducer", () => {
                 { x: 0, y: 1 },
               ],
               actionIndex: 0,
+              x: 0,
+              y: 1,
             }),
             new EnemyState({
               actions: [
@@ -196,6 +221,8 @@ describe("enemy reducer", () => {
                 { x: 1, y: 0 },
               ],
               actionIndex: 0,
+              x: 1,
+              y: 0,
             }),
           ],
         ),
@@ -206,6 +233,17 @@ describe("enemy reducer", () => {
         [0, 1, _, _],
         [_, _, _, _],
         [_, _, _, _],
+      ])
+      const enemy0 = newState.enemies[0]
+      expect(enemy0.x).toBe(0)
+      expect(enemy0.y).toBe(1)
+      expect(enemy0.steps).toEqual([])
+      const enemy1 = newState.enemies[1]
+      expect(enemy1.x).toBe(1)
+      expect(enemy1.y).toBe(1)
+      expect(enemy1.steps).toEqual([
+        { x: 1, y: 0 },
+        { x: 1, y: 1 },
       ])
     })
 
@@ -231,6 +269,8 @@ describe("enemy reducer", () => {
                 { x: 0, y: 1 },
               ],
               actionIndex: 0,
+              x: 0,
+              y: 1,
             }),
           ],
         ),
@@ -242,6 +282,10 @@ describe("enemy reducer", () => {
         [_, _, _, _],
         [_, _, _, _],
       ])
+      const enemy = newState.enemies[0]
+      expect(enemy.x).toBe(0)
+      expect(enemy.y).toBe(1)
+      expect(enemy.steps).toEqual([])
     })
   })
 })

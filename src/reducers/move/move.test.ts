@@ -1,4 +1,5 @@
-import gameReducer, { State, _ } from "../game.reducer"
+import gameReducer from "../game.reducer"
+import { State, _ } from "../State"
 import { ACTIONS, Coordinates } from "../types"
 import { foundAPath, findTilesToCheck } from "."
 

@@ -1,7 +1,7 @@
 import React from "react"
 import { Board, Props } from "./Board"
 import { render, fireEvent } from "@testing-library/react"
-import { State } from "../reducers/game.reducer"
+import { State } from "../reducers/State"
 import { PlayerActions } from "../Menu/Menu"
 
 const center = {

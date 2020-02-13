@@ -1,5 +1,5 @@
 import { enemyReducer } from "."
-import { State, _ } from "../game.reducer"
+import { State, _ } from "../State"
 import { GameMap, EnemyLocation, EnemyState } from "../types"
 
 describe("enemy reducer", () => {

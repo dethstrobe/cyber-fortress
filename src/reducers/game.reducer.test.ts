@@ -1,4 +1,5 @@
-import gameReducer, { State } from "./game.reducer"
+import gameReducer from "./game.reducer"
+import { State } from "./State"
 
 describe("Game Reducer", () => {
   it("should return state if an invalid action is passed", () => {

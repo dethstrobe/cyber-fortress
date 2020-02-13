@@ -1,6 +1,6 @@
 import React, { useEffect, useCallback } from "react"
 import { moveActions } from "../reducers/move"
-import { State } from "../reducers/game.reducer"
+import { State } from "../reducers/State"
 import {
   PlayerState,
   GameMap,

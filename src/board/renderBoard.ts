@@ -26,7 +26,7 @@ const tileRenderOptions: TileOptions = {
   X: { stroke: "black", fill: "black" },
 }
 
-function drawBoardCurry(
+function generateDrawBoard(
   ctx: CanvasRenderingContext2D,
   map: TileOption[][],
   enemyLocations: EnemyLocation,
@@ -57,16 +57,9 @@ function drawBoardCurry(
 
     map.forEach((row, y) => {
       row.forEach((tile, x) => {
-        const enemyTile = enemyLocations[y][x]
-
-        if (typeof enemyTile === "number") {
-          ctx.fillStyle = `rgba(0, 0, 255, 0.${enemies[enemyTile].hp})`
-          ctx.strokeStyle = "white"
-        } else {
-          const { stroke, fill } = tileRenderOptions[tile]
-          ctx.fillStyle = fill
-          ctx.strokeStyle = stroke
-        }
+        const { stroke, fill } = tileRenderOptions[tile]
+        ctx.fillStyle = fill
+        ctx.strokeStyle = stroke
 
         ctx.fillRect(x * scale + offsetX, y * scale + offsetY, scale, scale)
       })
@@ -79,14 +72,29 @@ function drawBoardCurry(
       start = timestamp
       requestAnimationFrame(drawBoard)
     } else {
-      // player movement range
       drawPlayerMovementRange(ctx, scale, offsetX, offsetY, map, player)
     }
-    // player
+    drawEnemies(ctx, scale, offsetX, offsetY, enemies)
     drawPlayer(ctx, center, scale)
   }
 
   return drawBoard
+}
+
+function drawEnemies(
+  ctx: CanvasRenderingContext2D,
+  scale: number,
+  offsetX: number,
+  offsetY: number,
+  enemies: EnemyState[],
+) {
+  enemies.forEach(({ hp, x, y }) => {
+    if (hp > 0) {
+      ctx.fillStyle = `rgba(0, 0, 255, 0.${hp})`
+      ctx.strokeStyle = "white"
+      ctx.fillRect(x * scale + offsetX, y * scale + offsetY, scale, scale)
+    }
+  })
 }
 
 function drawPlayerMovementRange(
@@ -140,7 +148,7 @@ export const renderBoard = (
   ctx: CanvasRenderingContext2D,
   { scale, center, player, map, enemies, enemyLocations }: BoardOptions,
 ) => {
-  const drawBoard = drawBoardCurry(
+  const drawBoard = generateDrawBoard(
     ctx,
     map,
     enemyLocations,

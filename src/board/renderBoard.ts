@@ -79,7 +79,6 @@ function generateDrawBoard(
     drawEnemies(
       ctx,
       scale,
-      center,
       offsetX,
       offsetY,
       time,
@@ -95,7 +94,6 @@ function generateDrawBoard(
 function drawEnemies(
   ctx: CanvasRenderingContext2D,
   scale: number,
-  center: Coordinates,
   offsetX: number,
   offsetY: number,
   time: number,
@@ -108,10 +106,10 @@ function drawEnemies(
         progress = time / (300 / (enemy.steps.length || 2)),
         currentStep = enemy.steps[currentStepIndex] ?? enemy,
         nextStep = enemy.steps[currentStepIndex + 1] ?? enemy,
-        currentOffsetX = center.x + offsetX - currentStep.x * scale,
-        currentOffsetY = center.y + offsetY - currentStep.y * scale,
-        nextOffsetX = center.x + offsetX - nextStep.x * scale,
-        nextOffsetY = center.y + offsetY - nextStep.y * scale,
+        currentOffsetX = currentStep.x * scale,
+        currentOffsetY = currentStep.y * scale,
+        nextOffsetX = nextStep.x * scale,
+        nextOffsetY = nextStep.y * scale,
         enemyOffsetX =
           currentOffsetX - (currentOffsetX - nextOffsetX) * progress,
         enemyOffsetY =
@@ -119,12 +117,7 @@ function drawEnemies(
 
       ctx.fillStyle = `rgba(0, 0, 255, 0.${enemy.hp})`
       ctx.strokeStyle = "white"
-      ctx.fillRect(
-        enemy.x * scale + enemyOffsetX,
-        enemy.y * scale + enemyOffsetY,
-        scale,
-        scale,
-      )
+      ctx.fillRect(enemyOffsetX + offsetX, enemyOffsetY + offsetY, scale, scale)
     }
   })
 }

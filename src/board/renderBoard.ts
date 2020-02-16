@@ -118,6 +118,10 @@ function drawEnemies(
       ctx.fillStyle = `rgba(0, 0, 255, 0.${enemy.hp})`
       ctx.strokeStyle = "white"
       ctx.fillRect(enemyOffsetX + offsetX, enemyOffsetY + offsetY, scale, scale)
+
+      if (progress > 1) {
+        ++enemyCurrentStepIndices[index]
+      }
     }
   })
 }

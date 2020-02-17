@@ -19,6 +19,6 @@ describe("attack actions", () => {
       payload: { x: 0, y: 0 },
     })
 
-    expect(actual).toBe(initState)
+    expect(actual).toEqual(initState)
   })
 })

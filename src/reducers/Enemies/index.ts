@@ -50,7 +50,11 @@ export const enemyReducer: ReducerFunction = state => {
     }),
   )
 
-  if (enemyUpdateQue.length === 0) return state
+  if (enemyUpdateQue.length === 0)
+    return {
+      ...state,
+      enemies: [...enemies.map(enemy => ({ ...enemy, steps: [] }))],
+    }
 
   enemyUpdateQue.forEach(({ index, newLocation, actionIndex }) => {
     newEnemyLocations[newLocation.y][newLocation.x] = index

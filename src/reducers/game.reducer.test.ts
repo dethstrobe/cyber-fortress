@@ -8,6 +8,6 @@ describe("Game Reducer", () => {
 
     const actual = gameReducer(state, { type: "TACO" } as any)
 
-    expect(actual).toBe(state)
+    expect(actual).toEqual(state)
   })
 })

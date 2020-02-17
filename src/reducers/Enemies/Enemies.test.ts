@@ -102,7 +102,7 @@ describe("enemy reducer", () => {
       ])
     })
 
-    it("should stops if path is blocked", () => {
+    it("should stops if path is blocked and reset steps", () => {
       const newState = enemyReducer(
         setup(
           [
@@ -126,6 +126,10 @@ describe("enemy reducer", () => {
               actionIndex: 0,
               x: 2,
               y: 3,
+              steps: [
+                { x: 1, y: 3 },
+                { x: 2, y: 3 },
+              ],
             }),
           ],
         ),

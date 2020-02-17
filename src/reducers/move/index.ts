@@ -86,37 +86,37 @@ export const foundAPath = (
     speed = start.speed - 1,
     adjacentX = start.x + (isRight ? 1 : -1),
     adjacentY = start.y + (isBelow ? 1 : -1),
-    isAdjeacentXOffTheMap = adjacentX < 0 || adjacentX > map[0].length,
-    isAdjeacentYOffTheMap = adjacentY < 0 || adjacentY > map.length,
+    isAdjacentXOffTheMap = adjacentX < 0 || adjacentX > map[0].length,
+    isAdjacentYOffTheMap = adjacentY < 0 || adjacentY > map.length,
     adjacentTileX: PlayerState = { x: adjacentX, y: start.y, speed, steps: [] },
     adjacentTileY: PlayerState = { x: start.x, y: adjacentY, speed, steps: [] },
-    adjecentDiagonalTile: PlayerState = {
+    adjacentDiagonalTile: PlayerState = {
       x: adjacentX,
       y: adjacentY,
       speed: start.speed - Math.sqrt(2),
       steps: [],
     },
-    isXTileBlocked = isAdjeacentXOffTheMap || isTileBlocked(adjacentTileX, map),
-    isYTileBlock = isAdjeacentYOffTheMap || isTileBlocked(adjacentTileY, map),
+    isXTileBlocked = isAdjacentXOffTheMap || isTileBlocked(adjacentTileX, map),
+    isYTileBlock = isAdjacentYOffTheMap || isTileBlocked(adjacentTileY, map),
     isThereAChangeInX = start.x === end.x,
     isThereAChangeInY = start.y === end.y
 
   const tileToCheck: PlayerState[] = [
-    ...(isThereAChangeInX || isXTileBlocked || isAdjeacentXOffTheMap
+    ...(isThereAChangeInX || isXTileBlocked || isAdjacentXOffTheMap
       ? []
       : [adjacentTileX]),
-    ...(isThereAChangeInY || isYTileBlock || isAdjeacentYOffTheMap
+    ...(isThereAChangeInY || isYTileBlock || isAdjacentYOffTheMap
       ? []
       : [adjacentTileY]),
     ...(isThereAChangeInY ||
     isThereAChangeInX ||
     isXTileBlocked ||
     isYTileBlock ||
-    isAdjeacentXOffTheMap ||
-    isAdjeacentYOffTheMap ||
-    isTileBlocked(adjecentDiagonalTile, map)
+    isAdjacentXOffTheMap ||
+    isAdjacentYOffTheMap ||
+    isTileBlocked(adjacentDiagonalTile, map)
       ? []
-      : [adjecentDiagonalTile]),
+      : [adjacentDiagonalTile]),
   ]
 
   return tileToCheck.some(
@@ -195,6 +195,6 @@ export const moveReducers: MoveReducerTypes = {
       }
     }
 
-    return state
+    return { ...state, player: { ...state.player, steps: [] } }
   },
 }

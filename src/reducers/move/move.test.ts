@@ -4,9 +4,12 @@ import { ACTIONS, Coordinates } from "../types"
 import { foundAPath, findTilesToCheck } from "."
 
 describe("move action", () => {
-  const initState = (location: Coordinates = { x: 2, y: 3 }): State => {
+  const initState = (
+    location: Coordinates = { x: 2, y: 3 },
+    steps: Coordinates[] = [],
+  ): State => {
     const newState = new State()
-    newState.player = { ...newState.player, ...location }
+    newState.player = { ...newState.player, ...location, steps }
     newState.map = [
       ["O", "X", "O", "X"],
       ["O", "O", "O", "X"],
@@ -43,6 +46,23 @@ describe("move action", () => {
       type: ACTIONS.MOVE,
       payload: { x: 0, y: 3 },
     })
+
+    expect(actual.player.x).toEqual(0)
+    expect(actual.player.y).toEqual(0)
+    expect(actual.player.steps).toEqual([])
+  })
+
+  it("should set the steps to empty array if the player doesn't move", () => {
+    const actual = gameReducer(
+      initState({ x: 0, y: 0 }, [
+        { x: 1, y: 1 },
+        { x: 0, y: 0 },
+      ]),
+      {
+        type: ACTIONS.MOVE,
+        payload: { x: 0, y: 3 },
+      },
+    )
 
     expect(actual.player.x).toEqual(0)
     expect(actual.player.y).toEqual(0)

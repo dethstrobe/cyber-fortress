@@ -251,6 +251,67 @@ describe("enemy reducer", () => {
       ])
     })
 
+    it("should empty the steps an enemy that does not move", () => {
+      const newState = enemyReducer(
+        setup(
+          [
+            ["O", "O", "O", "O"],
+            ["O", "O", "O", "O"],
+            ["O", "O", "O", "O"],
+            ["O", "O", "O", "O"],
+          ],
+          [
+            [_, 1, _, _],
+            [0, _, _, _],
+            [_, _, _, _],
+            [_, _, _, _],
+          ],
+          [
+            new EnemyState({
+              actions: [
+                { x: 3, y: 1 },
+                { x: 0, y: 1 },
+              ],
+              actionIndex: 0,
+              x: 0,
+              y: 1,
+              steps: [
+                { x: 1, y: 1 },
+                { x: 0, y: 1 },
+              ],
+            }),
+            new EnemyState({
+              actions: [
+                { x: 1, y: 3 },
+                { x: 1, y: 0 },
+              ],
+              actionIndex: 0,
+              x: 1,
+              y: 0,
+            }),
+          ],
+        ),
+      )
+
+      expect(newState.enemyLocations).toEqual([
+        [_, _, _, _],
+        [0, 1, _, _],
+        [_, _, _, _],
+        [_, _, _, _],
+      ])
+      const enemy0 = newState.enemies[0]
+      expect(enemy0.x).toBe(0)
+      expect(enemy0.y).toBe(1)
+      expect(enemy0.steps).toEqual([])
+      const enemy1 = newState.enemies[1]
+      expect(enemy1.x).toBe(1)
+      expect(enemy1.y).toBe(1)
+      expect(enemy1.steps).toEqual([
+        { x: 1, y: 0 },
+        { x: 1, y: 1 },
+      ])
+    })
+
     it("should not move on to the player", () => {
       const newState = enemyReducer(
         setup(

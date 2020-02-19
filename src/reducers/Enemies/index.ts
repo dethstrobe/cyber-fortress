@@ -38,8 +38,10 @@ export const enemyReducer: ReducerFunction = state => {
             ) ||
             (newLocation.x === state.player.x &&
               newLocation.y === state.player.y)
-          )
+          ) {
+            enemies[tile] = { ...enemies[tile], steps: [] }
             return tile
+          }
 
           enemyUpdateQue.push({ index: tile, newLocation, actionIndex })
           return undefined
@@ -58,6 +60,7 @@ export const enemyReducer: ReducerFunction = state => {
 
   enemyUpdateQue.forEach(({ index, newLocation, actionIndex }) => {
     newEnemyLocations[newLocation.y][newLocation.x] = index
+
     enemies[index] = {
       ...state.enemies[index],
       ...newLocation,

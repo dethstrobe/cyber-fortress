@@ -36,6 +36,7 @@ function generateDrawBoard(
   center: Coordinates,
 ): (timestamp: number) => void {
   let start: number,
+    playerTimeOffset = 0,
     currentStepIndex = 0,
     enemyCurrentStepIndices = enemies.map(() => 0)
 
@@ -47,8 +48,7 @@ function generateDrawBoard(
 
     if (!start) start = timestamp
     const time = timestamp - start,
-      stepAt = player.steps.length || 2,
-      progress = time / 300 / stepAt,
+      progress = (time - playerTimeOffset) / 300 / (currentStepIndex + 1),
       currentStep = player.steps[currentStepIndex] ?? player,
       nextStep = player.steps[currentStepIndex + 1] ?? player,
       currentOffsetX = center.x - currentStep.x * scale,
@@ -68,18 +68,11 @@ function generateDrawBoard(
       })
     })
 
-    console.log(
-      // progress,
-      // stepAt,
-      // currentStepIndex,
-      progress,
-      (1 / stepAt) * (currentStepIndex + 1),
-    )
-
-    if (progress < (1 / stepAt) * (currentStepIndex + 1)) {
+    if (progress < 1) {
       requestAnimationFrame(drawBoard)
     } else if (currentStepIndex < player.steps.length - 1) {
       ++currentStepIndex
+      playerTimeOffset = time
       requestAnimationFrame(drawBoard)
     } else {
       drawPlayerMovementRange(ctx, scale, offsetX, offsetY, map, player)

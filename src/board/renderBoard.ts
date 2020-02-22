@@ -47,7 +47,8 @@ function generateDrawBoard(
 
     if (!start) start = timestamp
     const time = timestamp - start,
-      progress = time / (300 / (player.steps.length || 2)),
+      stepAt = player.steps.length || 2,
+      progress = time / 300 / stepAt,
       currentStep = player.steps[currentStepIndex] ?? player,
       nextStep = player.steps[currentStepIndex + 1] ?? player,
       currentOffsetX = center.x - currentStep.x * scale,
@@ -67,11 +68,18 @@ function generateDrawBoard(
       })
     })
 
-    if (progress < 1) {
+    console.log(
+      // progress,
+      // stepAt,
+      // currentStepIndex,
+      progress,
+      (1 / stepAt) * (currentStepIndex + 1),
+    )
+
+    if (progress < (1 / stepAt) * (currentStepIndex + 1)) {
       requestAnimationFrame(drawBoard)
     } else if (currentStepIndex < player.steps.length - 1) {
       ++currentStepIndex
-      start = timestamp
       requestAnimationFrame(drawBoard)
     } else {
       drawPlayerMovementRange(ctx, scale, offsetX, offsetY, map, player)

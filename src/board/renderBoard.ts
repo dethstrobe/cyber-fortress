@@ -48,9 +48,10 @@ function generateDrawBoard(
 
     if (!start) start = timestamp
     const time = timestamp - start,
-      progress = (time - playerTimeOffset) / 300 / (currentStepIndex + 1),
+      nextStepIndex = currentStepIndex + 1,
+      progress = (time - playerTimeOffset) / 150 / nextStepIndex,
       currentStep = player.steps[currentStepIndex] ?? player,
-      nextStep = player.steps[currentStepIndex + 1] ?? player,
+      nextStep = player.steps[nextStepIndex] ?? player,
       currentOffsetX = center.x - currentStep.x * scale,
       currentOffsetY = center.y - currentStep.y * scale,
       nextOffsetX = center.x - nextStep.x * scale,

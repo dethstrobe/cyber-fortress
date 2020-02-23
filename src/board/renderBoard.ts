@@ -51,7 +51,7 @@ function generateDrawBoard(
       nextStepIndex = currentStepIndex + 1,
       progress =
         ((time - playerTimeOffset) / 75) *
-        (nextStepIndex / player.steps.length),
+        (nextStepIndex / (player.steps.length || 2)),
       currentStep = player.steps[currentStepIndex] ?? player,
       nextStep = player.steps[nextStepIndex] ?? player,
       currentOffsetX = center.x - currentStep.x * scale,

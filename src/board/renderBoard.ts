@@ -3,7 +3,6 @@ import {
   GameMap,
   TileOption,
   EnemyState,
-  EnemyLocation,
   PlayerState,
 } from "../reducers/types"
 import { foundAPath, findVector } from "../reducers/move"
@@ -14,7 +13,6 @@ interface BoardOptions {
   center: Coordinates
   map: GameMap
   enemies: EnemyState[]
-  enemyLocations: EnemyLocation
 }
 
 type TileOptions = {
@@ -29,7 +27,6 @@ const tileRenderOptions: TileOptions = {
 function generateDrawBoard(
   ctx: CanvasRenderingContext2D,
   map: TileOption[][],
-  enemyLocations: EnemyLocation,
   enemies: EnemyState[],
   scale: number,
   player: PlayerState,
@@ -179,17 +176,9 @@ function drawPlayer(
 
 export const renderBoard = (
   ctx: CanvasRenderingContext2D,
-  { scale, center, player, map, enemies, enemyLocations }: BoardOptions,
+  { scale, center, player, map, enemies }: BoardOptions,
 ) => {
-  const drawBoard = generateDrawBoard(
-    ctx,
-    map,
-    enemyLocations,
-    enemies,
-    scale,
-    player,
-    center,
-  )
+  const drawBoard = generateDrawBoard(ctx, map, enemies, scale, player, center)
 
   requestAnimationFrame(drawBoard)
 }

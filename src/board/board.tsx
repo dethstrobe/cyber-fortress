@@ -65,7 +65,6 @@ const Board: React.FC<Props> = ({
         player,
         map,
         enemies,
-        enemyLocations,
       })
   }, [player, enemies, map, enemyLocations, findCenter])
 

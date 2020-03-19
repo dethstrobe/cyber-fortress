@@ -32,7 +32,11 @@ export class EnemyState implements PlayerState {
   }
 }
 
-export type TileOption = "O" | "X"
+type wall = "X"
+type space = "O"
+type shadow = "S"
+
+export type TileOption = wall | space | shadow
 
 export type GameMap = TileOption[][]
 

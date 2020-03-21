@@ -6,6 +6,7 @@ import {
   PlayerState,
 } from "../reducers/types"
 import { foundAPath, findVector } from "../reducers/move"
+import { findBoardVisibility } from "./fogOfWar"
 
 interface BoardOptions {
   scale: number
@@ -22,6 +23,7 @@ type TileOptions = {
 const tileRenderOptions: TileOptions = {
   O: { stroke: "blue", fill: "lightgray" },
   X: { stroke: "black", fill: "black" },
+  S: { stroke: "gray", fill: "gray" },
 }
 
 function generateDrawBoard(
@@ -56,9 +58,10 @@ function generateDrawBoard(
       nextOffsetX = center.x - nextStep.x * scale,
       nextOffsetY = center.y - nextStep.y * scale,
       offsetX = currentOffsetX - (currentOffsetX - nextOffsetX) * progress,
-      offsetY = currentOffsetY - (currentOffsetY - nextOffsetY) * progress
+      offsetY = currentOffsetY - (currentOffsetY - nextOffsetY) * progress,
+      fogOfWarMap = findBoardVisibility(map, player)
 
-    map.forEach((row, y) => {
+    fogOfWarMap.forEach((row, y) => {
       row.forEach((tile, x) => {
         const { stroke, fill } = tileRenderOptions[tile]
         ctx.fillStyle = fill

@@ -1,8 +1,4 @@
-import {
-  findBoardVisibility,
-  isTileVisible,
-  findAllTilesBetween,
-} from "./fogOfWar"
+import { findBoardVisibility, isTileVisible } from "./fogOfWar"
 import { GameMap, Coordinates } from "../reducers/types"
 
 describe("fogOfWar", () => {

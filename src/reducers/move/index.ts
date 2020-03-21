@@ -54,7 +54,7 @@ const findTheta2 = (start: Coordinates, end: Coordinates) =>
 export const isTileBlocked = ({ x, y }: Coordinates, map: GameMap) =>
   map[y][x] === "X"
 
-const isPathClearToMoveTo = (
+export const isPathClearToMoveTo = (
   start: Coordinates,
   end: Coordinates,
   map: GameMap,

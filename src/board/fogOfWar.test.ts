@@ -27,7 +27,7 @@ describe("fogOfWar", () => {
 
 const map: GameMap = [
   ["O", "O", "O", "O", "O"],
-  ["O", "O", "O", "O", "O"],
+  ["O", "X", "O", "O", "O"],
   ["O", "X", "O", "O", "O"],
   ["O", "O", "X", "O", "O"],
   ["O", "O", "O", "O", "O"],
@@ -50,5 +50,8 @@ describe("isTileVisible", () => {
   })
   it("should return 'X' if the tile is a wall", () => {
     expect(isTileVisible(map, 1, 2, playerLocation)).toBe("X")
+  })
+  it("should wall should not block other walls visibility", () => {
+    expect(isTileVisible(map, 1, 1, playerLocation)).toBe("X")
   })
 })

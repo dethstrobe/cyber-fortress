@@ -12,4 +12,8 @@ export const isTileVisible = (
   x: number,
   y: number,
   player: Coordinates,
-): TileOption => (isPathClearToMoveTo({ x, y }, player, map) ? map[y][x] : "S")
+): TileOption => {
+  const tile = map[y][x]
+  if (tile === "X") return tile
+  return isPathClearToMoveTo({ x, y }, player, map) ? tile : "S"
+}
